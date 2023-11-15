@@ -56,8 +56,14 @@ const uint64_t option_deny_list[] = {CURLOPT_SSLCERTTYPE, CURLOPT_SSLKEYPASSWD, 
 #warning "Using offset instead of symbol name for setDeviceId"
 #endif
 
-void* get_Arc_CURL_vsetopt(void* base);
+void* get_base();
+
+void* get_Arc_CURL_vsetopt();
+#ifdef SET_DEVICEID_USE_OFFSET
+void* get_Arc_Game_setDeviceId();
+#else
 void* get_Arc_Game_setDeviceId(void* base);
+#endif
 
 bool is_target_supported();
 

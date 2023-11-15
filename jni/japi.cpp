@@ -2,6 +2,7 @@
 // Created by lamadaemon on 11/13/2023.
 //
 #include "japi.h"
+#include "log.h"
 #include <jni.h>
 #include <cstring>
 
@@ -43,6 +44,7 @@ extern "C" JNIEXPORT jboolean JNICALL Java_icu_lama_ukbeggar_hooks_NArcHook_isVe
 }
 
 extern "C" JNIEXPORT void JNICALL Java_icu_lama_ukbeggar_hooks_NArcHook_setHookTarget(JNIEnv* env, jclass clazz, jint version) {
+    LOGI("Setting hook target to %d", version);
     gameversion = version;
 }
 

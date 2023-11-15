@@ -5,7 +5,7 @@ project(narchook)
 #    COMPILE SETTINGS     #
 ###########################
 
-set(TARGET_ARCAEA_VERSION              "5.1.3") # string
+set(TARGET_ARCAEA_VERSION                5.1.3) # string
 
 set(OVERRIDE_OFFSET_VSETOPT_PLAYSTORE         ) # size_t    Set a value to override Playstore version default 'CURL_vsetopt' offset
 set(OVERRIDE_OFFSET_VSETOPT_CHINA             ) # size_t    Set a value to override China version default 'CURL_vsetopt' offset
@@ -73,6 +73,9 @@ if (NO_FAKE_DEVICEID_SUPPORT)
 endif()
 
 message("Now building narchook for Arcaea version: ${TARGET_ARCAEA_VERSION}")
+
+find_library(logcat log)
 add_library(narchook SHARED ${SOURCES})
+target_link_libraries(narchook ${logcat})
 target_compile_definitions(narchook PUBLIC USE_CHINA_VER TARGET_VERSION="\\"${TARGET_ARCAEA_VERSION}\\"")
 set_target_properties(narchook PROPERTIES OUTPUT_NAME narchook)

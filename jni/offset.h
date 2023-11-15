@@ -17,18 +17,48 @@
 const char* libname = "libcocos2dcpp.so";
 const uint64_t option_deny_list[] = {CURLOPT_SSLCERTTYPE, CURLOPT_SSLKEYPASSWD, CURLOPT_SSLCERT_BLOB, CURLOPT_PINNEDPUBLICKEY};
 
-#ifdef USE_PLAYSTORE_VER
-
-#define OFFSET_Arc_CURL_vsetopt 0xA3C364
-
-#warning "Using PlayStore version"
-
+#ifdef OVERRIDE_OFFSET_VSETOPT_PLAYSTORE
+#define OFFSET_Arc_CURL_vsetopt OVERRIDE_OFFSET_VSETOPT_PLAYSTORE
+#pragma message "Overriding offset for PlayStore version"
 #else
-
-#define OFFSET_Arc_CURL_vsetopt 0xED0064
-
-#warning "Using China version"
-
+#define OFFSET_P_Arc_CURL_vsetopt 0xA3C364
 #endif
+
+#ifdef OVERRIDE_OFFSET_VSETOPT_CHINA
+#define OFFSET_Arc_CURL_vsetopt OVERRIDE_OFFSET_VSETOPT_CHINA
+#pragma message "Overriding offset for China version"
+#else
+#define OFFSET_C_Arc_CURL_vsetopt 0xED0064
+#endif
+
+#ifdef OVERRIDE_JNI_SET_DEVICEID_NAME
+#define JNI_SET_DEVICEID_NAME OVERRIDE_JNI_SET_DEVICEID_NAME
+#pragma message "Overriding JNI setDeviceId name"
+#else
+#define JNI_SET_DEVICEID_NAME "Java_low_moe_AppActivity_setDeviceId"
+#endif
+
+#ifdef JNI_SET_DEVICEID_OFFSET_PLAYSTORE
+#ifndef SET_DEVICEID_USE_OFFSET
+#define SET_DEVICEID_USE_OFFSET
+#endif
+#define JNI_SET_DEVICEID_OFFSET JNI_SET_DEVICEID_OFFSET_PLAYSTORE
+#endif
+
+#ifdef JNI_SET_DEVICEID_OFFSET_CHINA
+#ifndef SET_DEVICEID_USE_OFFSET
+#define SET_DEVICEID_USE_OFFSET
+#endif
+#define JNI_SET_DEVICEID_OFFSET JNI_SET_DEVICEID_OFFSET_CHINA
+#endif
+
+#ifdef SET_DEVICEID_USE_OFFSET
+#warning "Using offset instead of symbol name for setDeviceId"
+#endif
+
+void* get_Arc_CURL_vsetopt(void* base);
+void* get_Arc_Game_setDeviceId(void* base);
+
+bool is_target_supported();
 
 #endif //NARCHOOK_OFFSET_H

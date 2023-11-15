@@ -3,16 +3,18 @@
 //
 
 #include <string>
+#include <jni.h>
 
 #include "lsp.h"
 #include "offset.h"
-#include "jniconf.h"
+#include "japi.h"
 #include "utils.h"
 
 static HookFunType hook = nullptr;
 static UnhookFunType unhook = nullptr;
 
 uint64_t *(*Arc_CURL_vsetopt)(void* curl_easy_handle, int32_t option, void* param);
+void *(*Arc_Game_setDeviceId)(JNIEnv* env, jclass clazz, jstring id);
 
 uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, void* param) {
     if (!should_enable_hook()) {
@@ -27,7 +29,7 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, void
         case CURLOPT_SSL_VERIFYPEER:
             return Arc_CURL_vsetopt(curl_easy_handle, CURLOPT_SSL_VERIFYPEER, nullptr);
         case CURLOPT_URL:
-            if (param != nullptr) {
+            if (param != nullptr && should_override_api()) {
                 std::string url = std::string((char*) param);
                 // Find out the protocol
                 size_t protocol_index = url.find("://");
@@ -53,6 +55,14 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, void
     return Arc_CURL_vsetopt(curl_easy_handle, option, param);
 }
 
+void *Arc_Game_setDeviceId_callback(JNIEnv* env, jclass clazz, jstring id) {
+    if (!should_enable_hook() && should_enable_fake_deviceid()) {
+        return Arc_Game_setDeviceId(env, clazz, env->NewStringUTF(get_fake_deviceid()));
+    }
+    return Arc_Game_setDeviceId(env, clazz, id);
+}
+
+
 extern "C" [[gnu::visibility("default")]] [[gnu::used]]
 NativeOnModuleLoaded native_init(const NativeAPIEntries *entries) {
     hook = entries->hook_func;
@@ -61,10 +71,9 @@ NativeOnModuleLoaded native_init(const NativeAPIEntries *entries) {
 
 extern "C" [[gnu::visibility("default")]] [[gnu::used]]
 NativeOnModuleLoaded on_module_loaded(const char* name, void* handle) {
-    if (ends_with(std::string(name), std::string(libname))) {
-        void* vsetopt = (void*)((uint64_t) handle + OFFSET_Arc_CURL_vsetopt);
-
-        hook(vsetopt, (void*) Arc_CURL_vsetopt_callback, (void**) &Arc_CURL_vsetopt);
+    if (ends_with(std::string(name), std::string(libname)) && is_target_supported()) {
+        hook(get_Arc_CURL_vsetopt(handle), (void*) Arc_CURL_vsetopt_callback, (void**) &Arc_CURL_vsetopt);
+        hook(get_Arc_Game_setDeviceId(handle), (void*) Arc_Game_setDeviceId_callback, (void**) &Arc_Game_setDeviceId);
     }
 }
 

@@ -71,7 +71,7 @@ NativeOnModuleLoaded native_init(const NativeAPIEntries *entries) {
 
 extern "C" [[gnu::visibility("default")]] [[gnu::used]]
 NativeOnModuleLoaded on_module_loaded(const char* name, void* handle) {
-    if (ends_with(std::string(name), std::string(libname)) && is_target_supported()) {
+    if (ends_with(std::string(name), std::string(TARGET_NAME)) && is_target_supported()) {
         hook(get_Arc_CURL_vsetopt(handle), (void*) Arc_CURL_vsetopt_callback, (void**) &Arc_CURL_vsetopt);
         hook(get_Arc_Game_setDeviceId(handle), (void*) Arc_Game_setDeviceId_callback, (void**) &Arc_Game_setDeviceId);
     }

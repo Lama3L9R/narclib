@@ -14,7 +14,7 @@
 
 #define CURL_SUCCESS 0
 
-const char* libname = "libcocos2dcpp.so";
+#define TARGET_NAME "libcocos2dcpp.so"
 const uint64_t option_deny_list[] = {CURLOPT_SSLCERTTYPE, CURLOPT_SSLKEYPASSWD, CURLOPT_SSLCERT_BLOB, CURLOPT_PINNEDPUBLICKEY};
 
 #ifdef OVERRIDE_OFFSET_VSETOPT_PLAYSTORE

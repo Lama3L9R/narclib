@@ -56,4 +56,6 @@ bool is_target_supported() {
         return true;
 #endif
     }
+
+    return false;
 }

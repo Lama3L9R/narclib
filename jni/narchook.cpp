@@ -5,6 +5,7 @@
 #include <string>
 #include <jni.h>
 
+#include "narchook.h"
 #include "lsp.h"
 #include "offset.h"
 #include "japi.h"
@@ -14,33 +15,39 @@
 static HookFunType hook = nullptr;
 static UnhookFunType unhook = nullptr;
 
-uint64_t *(*Arc_CURL_vsetopt)(void* curl_easy_handle, int32_t option, void* param);
+uint64_t *(*Arc_CURL_vsetopt)(void* curl_easy_handle, int32_t option, va_list param);
 void *(*Arc_Game_setDeviceId)(JNIEnv* env, jclass clazz, jstring id);
 
-uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, void* param) {
+uint64_t* Arcaea_CURL_vsetopt(void* curl_easy_handle, int32_t option, va_list param) {
+    return Arc_CURL_vsetopt(curl_easy_handle, option, param);
+}
+
+uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_list param) {
     if (!should_enable_hook()) {
-        LOGI("CURL_vsetopt CALL: %d", option);
         return Arc_CURL_vsetopt(curl_easy_handle, option, param);
     }
 
     if (contains(option_deny_list, countof(option_deny_list), option)) {
-        LOGI("CURL_vsetopt CALLREJECTED: %d is in deny list", option);
         return CURL_SUCCESS;
     }
 
     switch (option) {
         case CURLOPT_SSL_VERIFYPEER:
-            LOGI("CURL_vsetopt CALLHIJACKED: %d", option);
-            return Arc_CURL_vsetopt(curl_easy_handle, CURLOPT_SSL_VERIFYPEER, nullptr);
+        {
+            return curl_vsetopt_delegation(curl_easy_handle, option, 0);
+        }
+
         case CURLOPT_URL:
-            if (param != nullptr && should_override_api()) {
-                std::string url = std::string((char*) param);
+        {
+            char* url_raw = va_arg(param, char *);
+            if (url_raw != nullptr && should_override_api()) {
+                std::string url = std::string(url_raw);
                 // Find out the protocol
                 size_t protocol_index = url.find("://");
                 std::string protocol = url.substr(0, protocol_index);
 
                 // Find out the host and path
-                size_t host_end_index = url.find("/", protocol_index + 3);
+                size_t host_end_index = url.find('/', protocol_index + 3);
                 std::string host = url.substr(protocol_index + 3, host_end_index - protocol_index - 3);
                 std::string path = url.substr(host_end_index);
 
@@ -48,15 +55,27 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, void
 
                 // According to https://curl.se/libcurl/c/CURLOPT_URL.html, we should free the string
                 char* cstr_new_url = strdup(new_url.c_str());
-                uint64_t* rtn = Arc_CURL_vsetopt(curl_easy_handle, CURLOPT_URL, cstr_new_url);
+                LOGI("API Overriding: %s -> %s", url_raw, cstr_new_url);
+
+                va_list args = build_args(0, cstr_new_url);
+                uint64_t* rtn = curl_vsetopt_delegation(curl_easy_handle, option, cstr_new_url);
+
                 free(cstr_new_url);
 
                 return rtn;
+            } else {
+                return curl_vsetopt_delegation(curl_easy_handle, option, url_raw);;
             }
-            break;
+        }
+
+        case CURLOPT_SSL_VERIFYHOST: {
+            va_list args = build_args(0, 0LL);
+            uint64_t* rtn = Arc_CURL_vsetopt(curl_easy_handle, CURLOPT_URL, args);
+            va_end(args);
+            return rtn;
+        }
     }
 
-    LOGI("CURL_vsetopt CALL: %d", option);
     return Arc_CURL_vsetopt(curl_easy_handle, option, param);
 }
 

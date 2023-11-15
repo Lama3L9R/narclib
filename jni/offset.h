@@ -10,9 +10,10 @@
 #define CURLOPT_SSLCERT_BLOB 40291
 #define CURLOPT_PINNEDPUBLICKEY 10230
 #define CURLOPT_SSL_VERIFYPEER 64
+#define CURLOPT_SSL_VERIFYHOST 81
 #define CURLOPT_URL 10002
 
-#define CURL_SUCCESS 0
+#define CURL_SUCCESS 0LL
 
 #define TARGET_NAME "libcocos2dcpp.so"
 const uint64_t option_deny_list[] = {CURLOPT_SSLCERTTYPE, CURLOPT_SSLKEYPASSWD, CURLOPT_SSLCERT_BLOB, CURLOPT_PINNEDPUBLICKEY};
@@ -21,7 +22,7 @@ const uint64_t option_deny_list[] = {CURLOPT_SSLCERTTYPE, CURLOPT_SSLKEYPASSWD, 
 #define OFFSET_Arc_CURL_vsetopt OVERRIDE_OFFSET_VSETOPT_PLAYSTORE
 #pragma message "Overriding offset for PlayStore version"
 #else
-#define OFFSET_P_Arc_CURL_vsetopt 0xA3C364
+#define OFFSET_P_Arc_CURL_vsetopt 0x79C234
 #endif
 
 #ifdef OVERRIDE_OFFSET_VSETOPT_CHINA

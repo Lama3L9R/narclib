@@ -21,6 +21,8 @@ set(NO_FAKE_DEVICEID_SUPPORT                 0) # boolean   Set to 1 to disable 
 #    COMMON SETTINGS      #
 ###########################
 
+set(ANDROID_ABI arm64-v8a)
+set(ANDROID_PLATFORM 30)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(jni)

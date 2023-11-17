@@ -109,7 +109,7 @@ NativeOnModuleLoaded native_init(const NativeAPIEntries *entries) {
     hook = entries->hook_func;
     unhook = entries->unhook_func;
 
-    LOGI("Welcome to narchook! Version: 616.58-Dev04");
+    LOGI("Welcome to narchook! Version: 616.58-Dev05");
 
     return on_module_loaded;
 }

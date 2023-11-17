@@ -7,6 +7,7 @@ project(narchook)
 
 set(TARGET_ARCAEA_VERSION                5.1.3) # string
 
+set(ENABLE_GENERIC_HOOKING                   1) # boolean   Set to 1 to enable generic hooking
 set(OVERRIDE_OFFSET_VSETOPT_PLAYSTORE         ) # size_t    Set a value to override Playstore version default 'CURL_vsetopt' offset
 set(OVERRIDE_OFFSET_VSETOPT_CHINA             ) # size_t    Set a value to override China version default 'CURL_vsetopt' offset
 set(JNI_SET_DEVICEID_OFFSET_PLAYSTORE         ) # size_t    Set a value to use offset instead of symbol name for 'setDeviceId' hook
@@ -70,6 +71,11 @@ endif()
 if (NO_FAKE_DEVICEID_SUPPORT)
     add_compile_definitions(NO_FAKE_DEVICEID_SUPPORT)
     message(WARNING "Fake device id support disabled!")
+endif()
+
+if (ENABLE_GENERIC_HOOKING)
+    add_compile_definitions(ENABLE_GENERIC_HOOKING)
+    message(WARNING "Generic hooking enabled!")
 endif()
 
 message("Now building narchook for Arcaea version: ${TARGET_ARCAEA_VERSION}")

@@ -13,6 +13,17 @@ Native ARCaea HOOK
 - [x] Disable SSL Pinning
 - [x] Custom API Address
 - [x] Fake device ID
+- [x] **NOT TESTED YET** Generic hooking
+
+### Changelog
+
+- Dev 01
+    - Added SSL Pinning Bypass
+    - Added Custom API Address Override
+- Dev 04
+    - Added Fake Device ID
+- Dev 05
+    - Added Generic Hooking
 
 ### Build
 
@@ -37,6 +48,7 @@ Checkout CMakeLists.txt
 
 set(TARGET_ARCAEA_VERSION              "5.1.3") # string
 
+set(ENABLE_GENERIC_HOOKING                   1) # boolean   Set to 1 to enable generic hooking
 set(OVERRIDE_OFFSET_VSETOPT_PLAYSTORE         ) # size_t    Set a value to override Playstore version default 'CURL_vsetopt' offset
 set(OVERRIDE_OFFSET_VSETOPT_CHINA             ) # size_t    Set a value to override China version default 'CURL_vsetopt' offset
 set(JNI_SET_DEVICEID_OFFSET_PLAYSTORE         ) # size_t    Set a value to use offset instead of symbol name for 'setDeviceId' hook
@@ -51,4 +63,7 @@ set(NO_FAKE_DEVICEID_SUPPORT                 0) # boolean   Set to 1 to disable 
 ## TOODs
 
 - [x] Fix potential memory leak in `narchook.cpp` (line 43)
-- [ ] Test if this is working
+- [x] Test if this is working
+- [ ] Test Generic Hooking
+- [ ] Test Java API
+- [ ] Add full documentation since I am forgetting everything

@@ -38,11 +38,9 @@ void* from_byte_sequence(void* begin, char* search_seq, size_t len, size_t max_s
         return nullptr;
     }
 
-    if (memcmp(begin, search_seq, len) < 0) {
-        return from_byte_sequence((void*)((size_t) begin + 1), search_seq, len, --max_searches);
-    }
+    void* result = memmem(begin, max_searches, search_seq, len);
 
-    return begin;
+    return result;
 }
 
 

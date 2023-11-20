@@ -105,6 +105,10 @@ extern "C" JNIEXPORT jboolean JNICALL Java_icu_lama_ukbeggar_hooks_NArcHook_isFe
     }
 }
 
+extern "C" JNIEXPORT jint JNICALL Java_icu_lama_ukbeggar_hooks_NArcHook_getVersion(JNIEnv* env, jclass clazz) {
+    return NARCHOOK_API_VERSION;
+}
+
 bool should_enable_hook() {
     return enable_hook;
 }

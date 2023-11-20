@@ -17,4 +17,6 @@ uint64_t* curl_vsetopt_delegation(void* curl_easy_handle, int32_t option, ...);
 template<std::size_t N, class T>
 constexpr std::size_t countof(T(&)[N]) { return N; }
 
+char* build_version_string();
+
 #endif //NARCHOOK_UTILS_H

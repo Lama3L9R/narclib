@@ -18,6 +18,9 @@ set(NO_PLAYSTORE_SUPPORT                     0) # boolean   Set to 1 to disable 
 set(NO_CHINA_SUPPORT                         0) # boolean   Set to 1 to disable China version support
 set(NO_FAKE_DEVICEID_SUPPORT                 0) # boolean   Set to 1 to disable fake device id support
 
+set(NARCHOOK_API_VERSION                     6) # integer   NArcHook API version
+set(NARCHOOK_BUILD_TYPE                      0) # integer   Set to 1 for release builds
+
 ###########################
 #    COMMON SETTINGS      #
 ###########################
@@ -78,7 +81,16 @@ if (ENABLE_GENERIC_HOOKING)
     message(WARNING "Generic hooking enabled!")
 endif()
 
-message("Now building narchook for Arcaea version: ${TARGET_ARCAEA_VERSION}")
+add_compile_definitions(NARCHOOK_API_VERSION=${NARCHOOK_API_VERSION})
+add_compile_definitions(NARCHOOK_BUILD_TYPE=${NARCHOOK_BUILD_TYPE})
+
+if (NARCHOOK_BUILD_TYPE EQUAL 1)
+    message("Now building narchook (R${NARCHOOK_API_VERSION}) for Arcaea version: ${TARGET_ARCAEA_VERSION}")
+    add_compile_options(-O3)
+else()
+    message("Now building narchook (D${NARCHOOK_API_VERSION}) for Arcaea version: ${TARGET_ARCAEA_VERSION}")
+    add_compile_options(-O0)
+endif ()
 
 find_library(logcat log)
 add_library(narchook SHARED ${SOURCES})

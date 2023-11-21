@@ -27,9 +27,14 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
         return Arc_CURL_vsetopt(curl_easy_handle, option, param);
     }
 
+
     if (contains(option_deny_list, countof(option_deny_list), option)) {
+        LOGD("Invoke <CALL-REJECTED> CURL_vsetopt: %d", option);
+
         return CURL_SUCCESS;
     }
+
+    LOGD("Invoke CURL_vsetopt: %d", option);
 
     switch (option) {
         case CURLOPT_SSL_VERIFYPEER:
@@ -69,10 +74,7 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
         }
 
         case CURLOPT_SSL_VERIFYHOST: {
-            va_list args = build_args(0, 0LL);
-            uint64_t* rtn = Arc_CURL_vsetopt(curl_easy_handle, CURLOPT_URL, args);
-            va_end(args);
-            return rtn;
+            return curl_vsetopt_delegation(curl_easy_handle, option, 0);
         }
     }
 

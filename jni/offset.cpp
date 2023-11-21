@@ -50,17 +50,9 @@ void* get_Arc_CURL_vsetopt() {
     }
 
     switch (get_hooking_method()) {
-        case HOOKING_USE_OFFSET:
-            if (get_game_version() == ARCAEA_VERSION_PLAYSTORE) {
-                LOGI("Using offset %p", from_offset(get_base(), OFFSET_P_Arc_CURL_vsetopt));
-                return from_offset(get_base(), OFFSET_P_Arc_CURL_vsetopt);
-            } else {
-                return from_offset(get_base(), OFFSET_C_Arc_CURL_vsetopt);
-            }
-        case HOOKING_USE_CUSTOM_OFFSET:
-            return from_offset(get_base(), get_override_offset());
         case HOOKING_USE_GENERIC_SEARCH:
 #ifdef ENABLE_GENERIC_HOOKING
+        {
             uint8_t* pattern = get_override_search_seq();
             size_t len = get_override_search_seqlen();
             if (pattern == nullptr) {
@@ -74,11 +66,21 @@ void* get_Arc_CURL_vsetopt() {
                 LOGW("Using generic hooking for Arc_CURL_vsetopt: %p", fn);
                 return fn;
             } else {
-                LOGW("Generic hooking failed, using offset instead!");
+                LOGW("Generic hooking failed, falling back to offset!");
             }
+        }
 #else
             return nullptr;
 #endif
+        case HOOKING_USE_OFFSET:
+            if (get_game_version() == ARCAEA_VERSION_PLAYSTORE) {
+                LOGI("Using offset %p", from_offset(get_base(), OFFSET_P_Arc_CURL_vsetopt));
+                return from_offset(get_base(), OFFSET_P_Arc_CURL_vsetopt);
+            } else {
+                return from_offset(get_base(), OFFSET_C_Arc_CURL_vsetopt);
+            }
+        case HOOKING_USE_CUSTOM_OFFSET:
+            return from_offset(get_base(), get_override_offset());
     }
     
 

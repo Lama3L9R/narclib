@@ -18,7 +18,7 @@ set(NO_PLAYSTORE_SUPPORT                     0) # boolean   Set to 1 to disable 
 set(NO_CHINA_SUPPORT                         0) # boolean   Set to 1 to disable China version support
 set(NO_FAKE_DEVICEID_SUPPORT                 0) # boolean   Set to 1 to disable fake device id support
 
-set(NARCHOOK_API_VERSION                     6) # integer   NArcHook API version
+set(NARCHOOK_API_VERSION                     7) # integer   NArcHook API version
 set(NARCHOOK_BUILD_TYPE                      0) # integer   Set to 1 for release builds
 
 ###########################
@@ -27,14 +27,15 @@ set(NARCHOOK_BUILD_TYPE                      0) # integer   Set to 1 for release
 
 set(ANDROID_ABI arm64-v8a)
 set(ANDROID_PLATFORM 30)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 include_directories(jni)
 
 set(SOURCES jni/narchook.cpp
         jni/utils.cpp
         jni/japi.cpp
-        jni/offset.cpp)
+        jni/offset.cpp
+        jni/ada.cpp)
 
 if (OVERRIDE_OFFSET_VSETOPT_PLAYSTORE)
     add_compile_definitions(OVERRIDE_OFFSET_VSETOPT_PLAYSTORE=${OVERRIDE_OFFSET_VSETOPT_PLAYSTORE})

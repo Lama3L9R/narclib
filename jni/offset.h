@@ -13,7 +13,8 @@
 #define CURLOPT_SSL_VERIFYHOST 81
 #define CURLOPT_URL 10002
 
-#define CURL_SUCCESS 0LL
+#define CURL_SUCCESS 0uLL
+#define CURL_ERROR 1uLL
 
 #define TARGET_NAME "libcocos2dcpp.so"
 const uint64_t option_deny_list[] = {CURLOPT_PINNEDPUBLICKEY};

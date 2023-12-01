@@ -22,10 +22,14 @@
 
 #define HOOKING_FN_VSETOPT 0
 
+#define URL_ARCAPI_LEGACY 0
+#define URL_ARCAPI_V2 1
+
 bool should_enable_hook();
 bool should_enable_fake_deviceid();
 bool should_override_api();
 char* get_custom_api_v2();
+char* get_custom_api_legacy();
 int get_game_version();
 char* get_fake_deviceid();
 int get_hooking_method();

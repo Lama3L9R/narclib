@@ -11,6 +11,7 @@
 #include "japi.h"
 #include "utils.h"
 #include "log.h"
+#include "ada.h"
 
 static HookFunType hook = nullptr;
 static UnhookFunType unhook = nullptr;
@@ -46,28 +47,23 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
         {
             char* url_raw = va_arg(param, char *);
             if (url_raw != nullptr && should_override_api()) {
-                std::string url = std::string(url_raw);
-                // Find out the protocol
-                size_t protocol_index = url.find("://");
-                std::string protocol = url.substr(0, protocol_index);
+                // use ada to parse the original url
+                auto url = ada::parse(std::string(url_raw));
+                if (!url) {
+                    LOGE("Failed to parse url: %s!", url_raw);
+                    return curl_vsetopt_delegation(curl_easy_handle, option, url_raw);
+                }
 
-                // Find out the host and path
-                size_t host_end_index = url.find('/', protocol_index + 3);
-                std::string host = url.substr(protocol_index + 3, host_end_index - protocol_index - 3);
-                std::string path = url.substr(host_end_index);
+                if (url->get_host() == "arcapi-v2.lowiro.com") {
+                    url->set_host(std::string(get_custom_api_v2()));
+                } else if (url->get_host() == "arcapi.lowiro.com") {
+                    url->set_host(std::string(get_custom_api_legacy()));
+                }
 
-                std::string new_url = protocol + "://" + std::string(get_custom_api_v2()) + path;
+                auto new_url = url->to_string();
+                LOGI("Overriding url: %s -> %s", url_raw, new_url.c_str());
 
-                // According to https://curl.se/libcurl/c/CURLOPT_URL.html, we should free the string
-                char* cstr_new_url = strdup(new_url.c_str());
-                LOGI("API Overriding: %s -> %s", url_raw, cstr_new_url);
-
-                va_list args = build_args(0, cstr_new_url);
-                uint64_t* rtn = curl_vsetopt_delegation(curl_easy_handle, option, cstr_new_url);
-
-                free(cstr_new_url);
-
-                return rtn;
+                return curl_vsetopt_delegation(curl_easy_handle, option, (char*) new_url.c_str());
             } else {
                 return curl_vsetopt_delegation(curl_easy_handle, option, url_raw);;
             }

@@ -10,7 +10,8 @@
 bool enable_hook = false;
 bool enable_fake_deviceid = false;
 char* newId = nullptr;
-char* url = nullptr;
+char* url_api_v2 = nullptr;
+char* url_api_legacy = nullptr;
 int hooking_method = HOOKING_USE_GENERIC_SEARCH;
 size_t override_offset = 0;
 uint8_t* override_search = nullptr;
@@ -18,8 +19,12 @@ size_t override_search_len = 0;
 
 int gameversion = ARCAEA_VERSION_UNKNOWN;
 
-extern "C" JNIEXPORT void JNICALL Java_icu_lama_ukbeggar_hooks_NArcHook_setUrl(JNIEnv *env, jclass clazz, jstring url_) {
-    url = strdup(env->GetStringUTFChars(url_, 0));
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_ukbeggar_hooks_NArcHook_setCustomURL(JNIEnv *env, jclass clazz, jint api, jstring url_) {
+    if (api == URL_ARCAPI_LEGACY) {
+        url_api_legacy = strdup(env->GetStringUTFChars(url_, nullptr));
+    } else if (api == URL_ARCAPI_V2) {
+        url_api_v2 = strdup(env->GetStringUTFChars(url_, nullptr));
+    }
 }
 
 extern "C" JNIEXPORT void JNICALL Java_icu_lama_ukbeggar_hooks_NArcHook_enable(JNIEnv *env, jclass clazz, jboolean status) {
@@ -114,11 +119,16 @@ bool should_enable_hook() {
 }
 
 bool should_override_api() {
-    return url != nullptr;
+    return url_api_v2 != nullptr;
 }
 
 char* get_custom_api_v2() {
-    return url;
+    return url_api_v2;
+}
+
+char* get_custom_api_legacy() {
+    if (url_api_legacy == nullptr) return get_custom_api_v2();
+    return url_api_legacy;
 }
 
 int get_game_version() {

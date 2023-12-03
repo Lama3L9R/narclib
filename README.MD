@@ -2,7 +2,8 @@
 
 Native ARCaea HOOK
 
-**This project is not open-source.  Any dissemination, distribution, copying, or use of this information is strictly prohibited without the explicit permission of the owner of this repository**
+**This project is __not__ open-source.**
+**Any dissemination, distribution, copying, or use of this information to distribute, publish in any form is strictly prohibited without the explicit permission of the owner of this repository**
 
 ---
 
@@ -24,6 +25,12 @@ Native ARCaea HOOK
     - Added Fake Device ID
 - Dev 05
     - Added Generic Hooking
+- Dev 08 Major Update
+    - New hooking framework hookapi
+    - Massive code cleanup
+    - Massive Java API breaking changes
+    - Probably fixed pattern search
+    - Fix potential memory leak (free is not been called on shutdown)
 
 ### Build
 
@@ -46,7 +53,7 @@ Checkout CMakeLists.txt
 #    COMPILE SETTINGS     #
 ###########################
 
-set(TARGET_ARCAEA_VERSION              "5.1.3") # string
+set(TARGET_ARCAEA_VERSION                5.2.0) # string
 
 set(ENABLE_GENERIC_HOOKING                   1) # boolean   Set to 1 to enable generic hooking
 set(OVERRIDE_OFFSET_VSETOPT_PLAYSTORE         ) # size_t    Set a value to override Playstore version default 'CURL_vsetopt' offset
@@ -58,6 +65,9 @@ set(OVERRIDE_JNI_SET_DEVICEID_NAME            ) # string    Set a value to overr
 set(NO_PLAYSTORE_SUPPORT                     0) # boolean   Set to 1 to disable Playstore version support
 set(NO_CHINA_SUPPORT                         0) # boolean   Set to 1 to disable China version support
 set(NO_FAKE_DEVICEID_SUPPORT                 0) # boolean   Set to 1 to disable fake device id support
+
+set(NARCHOOK_API_VERSION                     8) # integer   NArcHook API version
+set(NARCHOOK_BUILD_TYPE                      0) # integer   Set to 1 for release builds
 ```
 
 ## TOODs

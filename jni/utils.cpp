@@ -1,36 +1,69 @@
 //
-// Created by lamadaemon on 11/13/2023.
+// Created by lamadaemon on 12/2/2023.
 //
+
+#include <cstdlib>
 #include "utils.h"
-#include "narchook.h"
+#include <string>
 
-bool ends_with(std::string const & value, std::string const & ending)
-{
-    if (ending.size() > value.size()) return false;
-    return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
-}
-
-bool contains(const uint64_t arr[], uint64_t len, uint64_t val) {
-    for (int i = 0; i < len; i++) {
-        if (arr[i] == val) {
-            return true;
+namespace narchook::utils {
+    dynarr_uint32 dynarr_uint32_init() {
+        return dynarr_uint32_t {
+            .len = 0,
+            .data = nullptr
+        };
+    }
+    void dynarr_uint32_append(dynarr_uint32_t* arr, uint32_t val) {
+        if (arr->len == 0) {
+            arr->data = (uint32_t*) malloc(sizeof(uint32_t));
+            arr->data[0] = val;
+        } else {
+            arr->data = (uint32_t*) realloc(arr->data, sizeof(uint32_t) * (arr->len + 1));
+            arr->data[arr->len++] = val;
         }
     }
-    return false;
-}
 
-va_list build_args(int dummy, ...) {
-    va_list args;
-    va_start(args, dummy);
-    return args;
-}
+    void dynarr_uint32_remove(dynarr_uint32_t* arr, uint32_t val) {
+        if (arr->len == 0) {
+            return;
+        }
 
-uint64_t* curl_vsetopt_delegation(void* curl_easy_handle, int32_t option, ...) {
-    va_list args;
-    uint64_t* rtn;
-    va_start(args, option);
-    rtn = Arcaea_CURL_vsetopt(curl_easy_handle, option, args);
-    va_end(args);
+        uint32_t* new_arr = (uint32_t*) malloc(sizeof(uint32_t) * (arr->len - 1));
+        for (int i = 0; i < arr->len; i++) {
+            if (arr->data[i] != val) {
+                new_arr[i] = arr->data[i];
+            }
+        }
 
-    return rtn;
+        arr->data = new_arr;
+    }
+
+    bool dynarr_uint32_contains(dynarr_uint32_t* arr, uint32_t val) {
+        if (arr->len == 0) {
+            return false;
+        }
+
+        for (int i = 0; i < arr->len; i++) {
+            if (arr->data[i] == val) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
+    void dynarr_uint32_end(dynarr_uint32_t* arr) {
+        if (arr->len == 0) {
+            return;
+        }
+
+        free(arr->data);
+        arr->len = 0;
+    }
+
+    bool ends_with(std::string const & value, std::string const & ending) {
+        if (ending.size() > value.size()) return false;
+        return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
+    }
 }

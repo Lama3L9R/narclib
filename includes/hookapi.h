@@ -72,7 +72,7 @@ namespace narchook {
 
     extern hooking_param_t NAME_NOT_SUPPORTED;
 
-    void begin(NativeAPIEntries entries);
+    void begin(const NativeAPIEntries* entries);
     void add_feature(hooking_feature_t feature);
     void hook_all(mem::dynlib_t lib);
 

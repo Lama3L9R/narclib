@@ -30,9 +30,11 @@ NativeOnModuleLoaded native_init(const NativeAPIEntries *entries) {
 #endif
 
     LOGI("Initializing narchook base...");
-    narchook::begin(*entries);
+    narchook::begin(entries);
+    LOGI("Adding features...");
     narchook::add_feature(narchook::hooks::curl_hacks::begin());
     narchook::add_feature(narchook::hooks::deviceid::begin());
+    LOGI("Narchook base initialized! Ready to give guy a f**k!");
 
     return on_module_loaded;
 }

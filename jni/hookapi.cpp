@@ -35,20 +35,23 @@ namespace narchook {
     narchook_t* archooks;
     hook_env_t* env;
 
-    void begin(NativeAPIEntries entries) {
+    void begin(const NativeAPIEntries* entries) {
         archooks = (narchook_t*) malloc(sizeof(narchook_t));
         env = (hook_env_t*) malloc(sizeof(hook_env_t));
 
         env->narchook = archooks;
-        env->hook_fn = entries.hook_func;
-        env->unhook_fn = entries.unhook_func;
+        env->hook_fn = entries->hook_func;
+        env->unhook_fn = entries->unhook_func;
 
-        archooks->is_enabled = false;
+        archooks->features = nullptr;
+        archooks->features_len = 0;
+        archooks->is_enabled = true;
     }
 
     void add_feature(hooking_feature_t feature) {
         if (archooks->features == nullptr) {
-            archooks->features = (hooking_feature_t*) malloc(sizeof(hooking_feature_t));
+            archooks->features = (hooking_feature_t*) mem::alloc(sizeof(hooking_feature_t));
+            archooks->features[0] = feature;
             archooks->features_len = 1;
         } else {
             archooks->features_len ++;

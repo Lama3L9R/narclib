@@ -3,6 +3,7 @@
 //
 #include "hooks/fake_deviceid.h"
 #include "log.h"
+#include "hooks/data.h"
 #include <jni.h>
 
 void *(*Arc_Game_setDeviceId)(JNIEnv* env, jclass clazz, jstring id);
@@ -57,7 +58,7 @@ namespace narchook::hooks::deviceid {
                 .method = HOOKING_USE_EXPORT_NAME,
                 .target = hooking_target_t {
                     .named = {
-                        .name = strdup("Java_low_moe_AppActivity_setDeviceId"),
+                        .name = strdup(GAME_SET_DEVICEID),
                     }
                 }
             } },

@@ -22,6 +22,7 @@ namespace narchook::mem {
     void* find_pattern(dynlib_t* lib, uint8_t* pattern, size_t len);
     void* from_offset(dynlib_t* lib, uintptr_t offset);
     void* from_export_name(dynlib_t* lib, const char* name);
+    void* alloc(size_t size);
 
 }
 

@@ -67,6 +67,20 @@ namespace narchook::hooks::deviceid {
         };
     }
 
+    void prepare_rnd(uint32_t seed) {
+        srand(seed);
+    }
+
+    char* random_device_id() {
+        char* id = (char*) malloc(17);
+        for (int i = 0; i < 16; i++) {
+            sprintf(&id[i], "%x", rand() % 16);
+        }
+        id[16] = '\0';
+
+        return id;
+    }
+
     void end() {
         if (override_id != nullptr) {
             free(override_id);
@@ -74,6 +88,18 @@ namespace narchook::hooks::deviceid {
 
         ended = true;
     }
+}
+
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_FakeDeviceID_prepareRandom(JNIEnv *env, jclass clazz, jint seed) {
+    narchook::hooks::deviceid::prepare_rnd(seed);
+}
+
+extern "C" JNIEXPORT jstring JNICALL Java_icu_lama_narchook_FakeDeviceID_randomDeviceID(JNIEnv *env, jclass clazz) {
+    char* id = narchook::hooks::deviceid::random_device_id();
+
+    jstring result = env->NewStringUTF(id);
+    free(id);
+    return result;
 }
 
 extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_FakeDeviceID_setFakeDeviceID(JNIEnv *env, jclass clazz, jstring newID) {

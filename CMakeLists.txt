@@ -18,7 +18,7 @@ set(NO_PLAYSTORE_SUPPORT                     0) # boolean   Set to 1 to disable 
 set(NO_CHINA_SUPPORT                         0) # boolean   Set to 1 to disable China version support
 set(NO_FAKE_DEVICEID_SUPPORT                 0) # boolean   Set to 1 to disable fake device id support
 
-set(NARCHOOK_API_VERSION                     8) # integer   NArcHook API version
+set(NARCHOOK_API_VERSION                     9) # integer   NArcHook API version
 set(NARCHOOK_BUILD_TYPE                      0) # integer   Set to 1 for release builds
 
 ###########################

@@ -31,6 +31,8 @@ Native ARCaea HOOK
     - Massive Java API breaking changes
     - Probably fixed pattern search
     - Fix potential memory leak (free is not been called on shutdown)
+- Dev 09
+    - Add support for generating random device ID 
 
 ### Build
 

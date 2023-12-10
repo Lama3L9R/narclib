@@ -1,3 +1,4 @@
+/* clang-format off */
 /* auto-generated on 2023-11-19 13:35:02 -0500. Do not edit! */
 /* begin file src/ada.cpp */
 #include "ada.h"
@@ -15596,3 +15597,4 @@ bool ada_search_params_entries_iter_has_next(
 }  // extern "C"
 /* end file src/ada_c.cpp */
 /* end file src/ada.cpp */
+/* clang-format on */

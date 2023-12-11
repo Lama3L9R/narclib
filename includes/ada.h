@@ -1,3 +1,4 @@
+/* clang-format off */
 /* auto-generated on 2023-11-19 13:35:02 -0500. Do not edit! */
 /* begin file include/ada.h */
 /**
@@ -7151,3 +7152,4 @@ std::string href_from_file(std::string_view path);
 
 #endif  // ADA_H
 /* end file include/ada.h */
+/* clang-format on */

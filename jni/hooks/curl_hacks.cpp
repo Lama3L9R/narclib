@@ -3,30 +3,30 @@
 //
 
 #include "hooks/curl_hacks.h"
-#include "hooks/data.h"
-#include <jni.h>
-#include "utils.h"
-#include "log.h"
 #include "ada.h"
+#include "hooks/data.h"
+#include "log.h"
+#include "utils.h"
+#include <jni.h>
 
-uint64_t *(*Arc_CURL_vsetopt)(void* curl_easy_handle, int32_t option, va_list param);
+uint64_t* (*Arc_CURL_vsetopt)(void* curl_easy_handle, int32_t option, va_list param);
 
 static const uint8_t pattern[] = CURL_VSETOPT_PATTERN;
 
-static narchook::utils::dynarr_uint32_t option_deny_list = narchook::utils::dynarr_uint32_init();
-static char* custom_api_v2 = nullptr;
-static char* custom_api_legacy = nullptr;
-static bool disable_ssl_pinning = false;
-static char* dump_cert_path = nullptr;
-static bool ended = false;
+static narchook::utils::dynarr_uint32_t option_deny_list    = narchook::utils::dynarr_uint32_init();
+static char*                            custom_api_v2       = nullptr;
+static char*                            custom_api_legacy   = nullptr;
+static bool                             disable_ssl_pinning = false;
+static char*                            dump_cert_path      = nullptr;
+static bool                             ended               = false;
 
 typedef struct curl_blob {
-    void* data;
-    size_t len;
+    void*        data;
+    size_t       len;
     unsigned int flags;
 } curl_blob_t;
 
-uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_list param) {
+uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_list param) {
     if (ended) {
         return Arc_CURL_vsetopt(curl_easy_handle, option, param);
     }
@@ -50,7 +50,7 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
         }
 
         case CURLOPT_URL: {
-            char* url_raw = va_arg(param, char *);
+            char* url_raw = va_arg(param, char*);
             if (url_raw != nullptr && (custom_api_v2 != nullptr)) {
                 auto url = ada::parse(std::string(url_raw));
                 if (!url) {
@@ -74,7 +74,8 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
 
                 return Arcaea::CURL::easy_setopt(curl_easy_handle, option, (char*) new_url.c_str());
             } else {
-                return Arcaea::CURL::easy_setopt(curl_easy_handle, option, url_raw);;
+                return Arcaea::CURL::easy_setopt(curl_easy_handle, option, url_raw);
+                ;
             }
         }
 
@@ -106,15 +107,15 @@ uint64_t *Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
                     goto DUMP_CERT_FINALIZE;
                 }
 
-                if ( !fwrite(cert->data, cert->len, 1, f) ) {
+                if (!fwrite(cert->data, cert->len, 1, f)) {
                     LOGE("Failed to dump cert: failed to write file (%d)", ferror(f));
                     goto DUMP_CERT_CLOSE;
                 }
 
-                DUMP_CERT_CLOSE:
+            DUMP_CERT_CLOSE:
                 fclose(f);
                 clearerr(f);
-                DUMP_CERT_FINALIZE:
+            DUMP_CERT_FINALIZE:
                 return Arcaea::CURL::easy_setopt(curl_easy_handle, option, cert);
             }
         }
@@ -191,23 +192,26 @@ namespace narchook::hooks::curl_hacks {
     }
 
     hooking_feature_t begin() {
-        return hooking_feature_t {
-            .feature = FEAT_CURLHACKS,
-            .is_enabled = false,
+        // clang-format off
+        return hooking_feature_t{
+            .feature        = FEAT_CURLHACKS,
+            .is_enabled     = false,
             .hooking_method = HOOKING_USE_PATTERN_SEARCH,
-            .params = { hooking_param {
-                .is_supported = true,
-                .method = HOOKING_USE_PATTERN_SEARCH,
-                .target = hooking_target_t {
-                    .search = {
-                        .pattern = (uint8_t*) &pattern,
-                        .len = sizeof pattern
+            .params         = {
+            hooking_param {
+                    .is_supported = true,
+                    .method       = HOOKING_USE_PATTERN_SEARCH,
+                    .target       = hooking_target_t{
+                        .search = {
+                            .pattern = (uint8_t*) &pattern,
+                            .len     = sizeof pattern
+                        }
                     }
-                }
-            }, OFFSET_NOT_SUPPORTED, NAME_NOT_SUPPORTED },
-            .handle_hook = (void*) Arc_CURL_vsetopt_callback,
-            .original_fn = (void**) &Arc_CURL_vsetopt
+                },OFFSET_NOT_SUPPORTED, NAME_NOT_SUPPORTED },
+            .handle_hook    = (void*) Arc_CURL_vsetopt_callback,
+            .original_fn    = (void**) &Arc_CURL_vsetopt
         };
+        // clang-format on
     }
 
     void end() {
@@ -227,7 +231,7 @@ namespace narchook::hooks::curl_hacks {
 
         ended = true;
     }
-}
+}// namespace narchook::hooks::curl_hacks
 
 namespace Arcaea::CURL {
     uint64_t* easy_setopt(void* curl_easy_handle, int32_t option, ...) {
@@ -241,36 +245,37 @@ namespace Arcaea::CURL {
         return result;
     }
 
-}
+}// namespace Arcaea::CURL
 
-extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_setCustomAPI(JNIEnv *env, jclass clazz, jstring url_) {
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_setCustomAPI(JNIEnv* env, jclass clazz, jstring url_) {
     const char* newhost = env->GetStringUTFChars(url_, JNI_FALSE);
-    char* host_c = strdup(newhost);
+    char*       host_c  = strdup(newhost);
     narchook::hooks::curl_hacks::set_param(PARAM_CURLHACKS_OVERRIDEAPI, host_c);
-    free(host_c);    env->ReleaseStringUTFChars(url_, newhost);
+    free(host_c);
+    env->ReleaseStringUTFChars(url_, newhost);
 }
 
-extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_setCustomAPIV2(JNIEnv *env, jclass clazz, jstring url_) {
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_setCustomAPIV2(JNIEnv* env, jclass clazz, jstring url_) {
     const char* newhost = env->GetStringUTFChars(url_, JNI_FALSE);
-    char* host_c = strdup(newhost);
+    char*       host_c  = strdup(newhost);
     narchook::hooks::curl_hacks::set_param(PARAM_CURLHACKS_OVERRIDEAPIV2, host_c);
     free(host_c);
     env->ReleaseStringUTFChars(url_, newhost);
 }
 
-extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_toggleDisableSSLPinning(JNIEnv *env, jclass clazz, jboolean disable) {
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_toggleDisableSSLPinning(JNIEnv* env, jclass clazz, jboolean disable) {
     narchook::hooks::curl_hacks::set_param(PARAM_CURLHACKS_NOSSLPINNING, disable);
 }
 
-extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_addDenyList(JNIEnv *env, jclass clazz, jint option) {
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_addDenyList(JNIEnv* env, jclass clazz, jint option) {
     narchook::hooks::curl_hacks::set_param(PARAM_CURLHACKS_ADDDENYLISTE, option);
 }
 
-extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_removeDenyList(JNIEnv *env, jclass clazz, jint option) {
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_removeDenyList(JNIEnv* env, jclass clazz, jint option) {
     narchook::hooks::curl_hacks::set_param(PARAM_CURLHACKS_REMOVEDENYLISTE, option);
 }
 
-extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_dumpCert(JNIEnv *env, jclass clazz, jstring path_) {
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_dumpCert(JNIEnv* env, jclass clazz, jstring path_) {
     const char* path = env->GetStringUTFChars(path_, JNI_FALSE);
     narchook::hooks::curl_hacks::set_param(PARAM_CURLHACKS_SAVECERT, strdup(path));
     env->ReleaseStringUTFChars(path_, path);

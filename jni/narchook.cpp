@@ -4,10 +4,10 @@
 
 #include <string>
 
+#include "hookapi.h"
+#include "log.h"
 #include "lsp.h"
 #include "utils.h"
-#include "log.h"
-#include "hookapi.h"
 
 #include "hooks/curl_hacks.h"
 #include "hooks/fake_deviceid.h"
@@ -21,8 +21,7 @@ void on_module_loaded(const char* name, void* handle) {
     }
 }
 
-extern "C" [[gnu::visibility("default")]] [[gnu::used]]
-NativeOnModuleLoaded native_init(const NativeAPIEntries *entries) {
+extern "C" [[gnu::visibility("default")]] [[gnu::used]] NativeOnModuleLoaded native_init(const NativeAPIEntries* entries) {
 #if NARCHOOK_BUILD_TYPE == 0
     LOGI("Welcome to narchook! Version: D%u", NARCHOOK_API_VERSION);
 #else
@@ -38,4 +37,3 @@ NativeOnModuleLoaded native_init(const NativeAPIEntries *entries) {
 
     return on_module_loaded;
 }
-

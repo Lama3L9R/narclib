@@ -5,6 +5,8 @@ Native ARCaea HOOK
 **This project is __not__ open-source.**
 **Any dissemination, distribution, copying, or use of this information to distribute, publish in any form is strictly prohibited without the explicit permission of the owner of this repository**
 
+Please read [daemonc Coding style](daemonc.MD)
+
 ---
 
 ## Info

@@ -8,7 +8,7 @@
 #include <cstdint>
 
 #define URL_ARCAPI_LEGACY 0
-#define URL_ARCAPI_V2 1
+#define URL_ARCAPI_V2     1
 
 
-#endif //NARCHOOK_JNI_H
+#endif//NARCHOOK_JNI_H

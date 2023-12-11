@@ -19,6 +19,6 @@ namespace narchook::hooks::deviceid {
     hooking_feature_t begin();
 
     void end();
-}
+}// namespace narchook::hooks::deviceid
 
-#endif //NARCHOOK_FAKE_DEVICEID_H
+#endif//NARCHOOK_FAKE_DEVICEID_H

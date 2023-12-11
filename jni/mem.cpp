@@ -4,29 +4,30 @@
 
 #include "mem.h"
 #include "log.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
 #include <dlfcn.h>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 namespace narchook::mem {
     typedef struct dynmodule {
         uintptr_t* base;
-        size_t size;
+        size_t     size;
     } dynmodule_t;
 
     bool find_module_base(const std::string& module_name, dynmodule_t* module) {
         std::ifstream maps("/proc/self/maps");
-        std::string line;
+        std::string   line;
         while (std::getline(maps, line)) {
             if (line.find(module_name) != std::string::npos) {
                 std::istringstream iss(line);
-                std::string start_address, end_address;
+                std::string        start_address;
+                std::string        end_address;
                 std::getline(iss, start_address, '-');
                 std::getline(iss, end_address, ' ');
-                module->base = (uintptr_t*) std::stoull(start_address, nullptr, 16);
+                module->base  = (uintptr_t*) std::stoull(start_address, nullptr, 16);
                 uintptr_t end = std::stoull(end_address, nullptr, 16);
-                module->size = end - (uintptr_t)module->base;
+                module->size  = end - (uintptr_t) module->base;
 
                 LOGI("Found module %s at %p with size %zu", module_name.c_str(), module->base, module->size);
                 return true;
@@ -38,7 +39,7 @@ namespace narchook::mem {
     dynlib_t find_library(const char* name) {
         dynlib_t lib;
         lib.libname = (char*) name;
-        lib.handle = nullptr;
+        lib.handle  = nullptr;
         dynmodule_t module;
 
         if (!find_module_base(name, &module)) {
@@ -54,7 +55,7 @@ namespace narchook::mem {
 
     dynlib_t find_library(const char* name, void* handle) {
         dynlib_t lib = find_library(name);
-        lib.handle = handle;
+        lib.handle   = handle;
         return lib;
     }
 
@@ -86,4 +87,4 @@ namespace narchook::mem {
         memset(data, 0, size);
         return data;
     }
-}
+}// namespace narchook::mem

@@ -3,8 +3,8 @@
 //
 
 #include "hookapi.h"
-#include "hooks/fake_deviceid.h"
 #include "hooks/curl_hacks.h"
+#include "hooks/fake_deviceid.h"
 #include <jni.h>
 
 extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_NArcHook_toggleFeature(JNIEnv* env, jclass clazz, jint feature, jboolean enabled) {

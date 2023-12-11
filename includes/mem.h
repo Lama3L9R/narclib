@@ -11,19 +11,19 @@ namespace narchook::mem {
     typedef struct dynlib dynlib_t;
 
     struct dynlib {
-        char* libname;
-        void* handle;
-        void* base;
+        char*  libname;
+        void*  handle;
+        void*  base;
         size_t size;
     };
 
     dynlib_t find_library(const char* name);
     dynlib_t find_library(const char* name, void* handle);
-    void* find_pattern(dynlib_t* lib, uint8_t* pattern, size_t len);
-    void* from_offset(dynlib_t* lib, uintptr_t offset);
-    void* from_export_name(dynlib_t* lib, const char* name);
-    void* alloc(size_t size);
+    void*    find_pattern(dynlib_t* lib, uint8_t* pattern, size_t len);
+    void*    from_offset(dynlib_t* lib, uintptr_t offset);
+    void*    from_export_name(dynlib_t* lib, const char* name);
+    void*    alloc(size_t size);
 
-}
+}// namespace narchook::mem
 
-#endif //NARCHOOK_MEM_H
+#endif//NARCHOOK_MEM_H

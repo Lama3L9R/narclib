@@ -2,23 +2,25 @@
 // Created by lamadaemon on 12/2/2023.
 //
 
-#include <cstdlib>
 #include "utils.h"
+#include <cstdlib>
 #include <string>
 
 namespace narchook::utils {
     dynarr_uint32 dynarr_uint32_init() {
+        // clang-format off
         return dynarr_uint32_t {
-            .len = 0,
-            .data = nullptr
+                .len  = 0,
+                .data = nullptr,
         };
     }
+
     void dynarr_uint32_append(dynarr_uint32_t* arr, uint32_t val) {
         if (arr->len == 0) {
-            arr->data = (uint32_t*) malloc(sizeof(uint32_t));
+            arr->data    = (uint32_t*) malloc(sizeof(uint32_t));
             arr->data[0] = val;
         } else {
-            arr->data = (uint32_t*) realloc(arr->data, sizeof(uint32_t) * (arr->len + 1));
+            arr->data             = (uint32_t*) realloc(arr->data, sizeof(uint32_t) * (arr->len + 1));
             arr->data[arr->len++] = val;
         }
     }
@@ -50,7 +52,6 @@ namespace narchook::utils {
         }
 
         return false;
-
     }
 
     void dynarr_uint32_end(dynarr_uint32_t* arr) {
@@ -62,7 +63,7 @@ namespace narchook::utils {
         arr->len = 0;
     }
 
-    bool ends_with(std::string const & value, std::string const & ending) {
+    bool ends_with(std::string const& value, std::string const& ending) {
         if (ending.size() > value.size()) return false;
         return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
     }

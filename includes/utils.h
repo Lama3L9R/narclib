@@ -20,6 +20,8 @@ namespace narchook::utils {
     void dynarr_uint32_end(dynarr_uint32_t* arr);
 
     bool ends_with(std::string const & value, std::string const & ending);
+
+    char* stringview_to_cstr(std::string_view sv);
 }
 
 #endif //NARCHOOK_UTILS_H

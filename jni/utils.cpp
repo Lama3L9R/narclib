@@ -67,4 +67,10 @@ namespace narchook::utils {
         if (ending.size() > value.size()) return false;
         return std::equal(ending.rbegin(), ending.rend(), value.rbegin());
     }
+
+    char* stringview_to_cstr(std::string_view sv) {
+        std::string str = { sv.begin(), sv.end() };
+
+        return strdup(str.c_str());
+    }
 }

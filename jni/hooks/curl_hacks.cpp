@@ -69,13 +69,15 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
                     }
                 }
 
-                auto new_url = url->to_string();
-                LOGI("Overriding url: %s -> %s", url_raw, new_url.c_str());
+                char* new_url = narchook::utils::stringview_to_cstr(url->get_href());
+                LOGI("Overriding url: %s -> %s", url_raw, new_url);
 
-                return Arcaea::CURL::easy_setopt(curl_easy_handle, option, (char*) new_url.c_str());
+                uint64_t* result = Arcaea::CURL::easy_setopt(curl_easy_handle, option, new_url);
+                free(new_url);
+
+                return result;
             } else {
                 return Arcaea::CURL::easy_setopt(curl_easy_handle, option, url_raw);
-                ;
             }
         }
 
@@ -129,7 +131,8 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
         }
     }
 
-    return Arc_CURL_vsetopt(curl_easy_handle, option, param);
+    uint64_t* result = Arc_CURL_vsetopt(curl_easy_handle, option, param);
+    LOGD("Http request done with code %zu", (size_t) result);
 }
 
 namespace narchook::hooks::curl_hacks {

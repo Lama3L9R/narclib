@@ -6,7 +6,7 @@ project(narchook)
 ###########################
 
 set(NARCHOOK_API_VERSION                     9) # integer   NArcHook API version
-set(NARCHOOK_BUILD_TYPE                      0) # integer   Set to 1 for release builds
+set(NARCHOOK_BUILD_TYPE                      1) # integer   Set to 1 for release builds
 set(NARCHOOK_BUILD_TARGET                    0) # integer   0 -> LSPosed, 1 -> Standalone library
 
 ###########################
@@ -35,15 +35,19 @@ endif()
 add_compile_definitions(NARCHOOK_API_VERSION=${NARCHOOK_API_VERSION})
 add_compile_definitions(NARCHOOK_BUILD_TYPE=${NARCHOOK_BUILD_TYPE})
 
+if (NARCHOOK_BUILD_TYPE EQUAL 1)
+    add_compile_options(-O3 -fvisibility=hidden)
+else()
+    add_compile_options(-O0)
+endif ()
+
 find_library(logcat log)
 add_library(narchook SHARED ${SOURCES})
 target_link_libraries(narchook ${logcat})
-target_compile_definitions(narchook PUBLIC USE_CHINA_VER TARGET_VERSION="\\"${TARGET_ARCAEA_VERSION}\\"")
 set_target_properties(narchook PROPERTIES OUTPUT_NAME narchook)
 
 if (NARCHOOK_BUILD_TYPE EQUAL 1)
     message("Now building narchook (R${NARCHOOK_API_VERSION}) on ${CMAKE_HOST_SYSTEM_NAME}")
-    add_compile_options(-O3 -fvisibility=hidden)
     if (CMAKE_HOST_WIN32)
         add_custom_command(TARGET narchook POST_BUILD
                 COMMAND powershell.exe
@@ -59,5 +63,4 @@ if (NARCHOOK_BUILD_TYPE EQUAL 1)
     endif ()
 else()
     message("Now building narchook (D${NARCHOOK_API_VERSION}) on ${CMAKE_HOST_SYSTEM_NAME}")
-    add_compile_options(-O0)
 endif ()

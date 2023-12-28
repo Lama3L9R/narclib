@@ -3,6 +3,7 @@
 //
 
 #include "mem.h"
+#include "hookapi.h"
 #include "log.h"
 #include <dlfcn.h>
 #include <fstream>
@@ -15,7 +16,7 @@ namespace narchook::mem {
         size_t     size;
     } dynmodule_t;
 
-    bool find_module_base(const std::string& module_name, dynmodule_t* module) {
+    EncryptedAPI bool find_module_base(const std::string& module_name, dynmodule_t* module) {
         std::ifstream maps("/proc/self/maps");
         std::string   line;
         while (std::getline(maps, line)) {
@@ -36,7 +37,7 @@ namespace narchook::mem {
         return false;
     }
 
-    dynlib_t find_library(const char* name) {
+    EncryptedAPI dynlib_t find_library(const char* name) {
         dynlib_t lib;
         lib.libname = (char*) name;
         lib.handle  = nullptr;
@@ -53,23 +54,23 @@ namespace narchook::mem {
         return lib;
     }
 
-    dynlib_t find_library(const char* name, void* handle) {
+    EncryptedAPI dynlib_t find_library(const char* name, void* handle) {
         dynlib_t lib = find_library(name);
         lib.handle   = handle;
         return lib;
     }
 
-    void* find_pattern(dynlib_t* lib, uint8_t* pattern, size_t len) {
+    EncryptedAPI void* find_pattern(dynlib_t* lib, uint8_t* pattern, size_t len) {
         LOGD("Searching pattern %p with length %zu", pattern, len);
         LOGD("Searching in range of %p to %p (size is: %p)", lib->base, (void*) ((uintptr_t) lib->base + lib->size), (void*) lib->size);
         return memmem(lib->base, lib->size, pattern, len);
     }
 
-    void* from_offset(dynlib_t* lib, uintptr_t offset) {
+    EncryptedAPI void* from_offset(dynlib_t* lib, uintptr_t offset) {
         return (void*) ((uintptr_t) lib->base + offset);
     }
 
-    void* from_export_name(dynlib_t* lib, const char* name) {
+    EncryptedAPI void* from_export_name(dynlib_t* lib, const char* name) {
         if (lib->handle == nullptr) {
             LOGE("Cannot find export %s from library %s without handle!", name, lib->libname);
             return nullptr;
@@ -78,7 +79,7 @@ namespace narchook::mem {
         return dlsym(lib->handle, name);
     }
 
-    void* alloc(size_t size) {
+    EncryptedAPI void* alloc(size_t size) {
         void* data = malloc(size);
         if (data == nullptr) {
             LOGE("Failed to allocate %zu bytes of memory", size);

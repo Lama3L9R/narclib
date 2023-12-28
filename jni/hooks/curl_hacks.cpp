@@ -133,6 +133,7 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
 
     uint64_t* result = Arc_CURL_vsetopt(curl_easy_handle, option, param);
     LOGD("Http request done with code %zu", (size_t) result);
+    return result;
 }
 
 namespace narchook::hooks::curl_hacks {

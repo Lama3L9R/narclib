@@ -37,7 +37,7 @@ namespace narchook {
     narchook_t* archooks;
     hook_env_t* env;
 
-    void begin(const NativeAPIEntries* entries) {
+    HookAPI void begin(const NativeAPIEntries* entries) {
         archooks = (narchook_t*) malloc(sizeof(narchook_t));
         env      = (hook_env_t*) malloc(sizeof(hook_env_t));
 
@@ -50,7 +50,7 @@ namespace narchook {
         archooks->is_enabled   = true;
     }
 
-    void add_feature(hooking_feature_t feature) {
+    HookAPI void add_feature(hooking_feature_t feature) {
         if (archooks->features == nullptr) {
             archooks->features     = (hooking_feature_t*) mem::alloc(sizeof(hooking_feature_t));
             archooks->features[0]  = feature;
@@ -62,11 +62,11 @@ namespace narchook {
         }
     }
 
-    hook_env_t* get_env() {
+    HookAPI hook_env_t* get_env() {
         return env;
     }
 
-    bool is_feature_enabled(uint32_t feature) {
+    HookAPI bool is_feature_enabled(uint32_t feature) {
         for (int i = 0; i < archooks->features_len; i++) {
             hooking_feature_t feat = archooks->features[i];
             if (feat.feature == feature && feat.is_enabled) {
@@ -77,7 +77,7 @@ namespace narchook {
         return false;
     }
 
-    void set_feature_enabled(uint32_t feature, bool enabled) {
+    HookAPI void set_feature_enabled(uint32_t feature, bool enabled) {
         for (int i = 0; i < archooks->features_len; i++) {
             hooking_feature_t* feat = &archooks->features[i];
             if (feat->feature == feature) {
@@ -87,7 +87,7 @@ namespace narchook {
         }
     }
 
-    void hook_all(mem::dynlib_t lib) {
+    HookAPI void hook_all(mem::dynlib_t lib) {
         env->lib  = lib;
         env->base = env->lib.base;
 
@@ -139,7 +139,7 @@ namespace narchook {
         }
     }
 
-    void end() {
+    HookAPI void end() {
         // Currently there is no support for dynamic overriding of hooking parameters
         // So all of them should be allocated in read-only area. No need to free them.
         // In future, after implementing dynamic overriding, this code should be uncommented and completed.

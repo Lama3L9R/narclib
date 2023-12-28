@@ -10,6 +10,7 @@
 #include "utils.h"
 
 #include "hooks/curl_hacks.h"
+#include "hooks/data.h"
 #include "hooks/fake_deviceid.h"
 
 void on_module_loaded(const char* name, void* handle) {

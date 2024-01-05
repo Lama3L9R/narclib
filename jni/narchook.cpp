@@ -13,6 +13,10 @@
 #include "hooks/data.h"
 #include "hooks/fake_deviceid.h"
 
+#ifdef NARCHOOK_BUILD_DEBUG
+#include "hooks/net_debug.h"
+#endif
+
 void on_module_loaded(const char* name, void* handle) {
     if (narchook::utils::ends_with(std::string(name), std::string(TARGET_NAME))) {
         narchook::mem::dynlib_t arcaea = narchook::mem::find_library(TARGET_NAME, handle);
@@ -31,9 +35,13 @@ extern "C" [[gnu::visibility("default")]] [[gnu::used]] NativeOnModuleLoaded nat
 
     LOGI("Initializing narchook base...");
     narchook::begin(entries);
-    LOGI("Adding features...");
-    narchook::add_feature(narchook::hooks::curl_hacks::begin());
-    narchook::add_feature(narchook::hooks::deviceid::begin());
+    LOGI("Initializing features...");
+    narchook::hooks::curl_hacks::begin();
+    narchook::hooks::deviceid::begin();
+#ifdef NARCHOOK_BUILD_DEBUG
+#warning Network debug enabled
+    narchook::hooks::net_debug::begin();
+#endif
     LOGI("Narchook base initialized! Ready to give guy a f**k!");
 
     return on_module_loaded;

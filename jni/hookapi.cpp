@@ -62,6 +62,12 @@ namespace narchook {
         }
     }
 
+    HookAPI void vadd_feature(hooking_feature_t feature[], size_t hook_len) {
+        for (size_t i = 0; i < hook_len; i ++) {
+            add_feature(feature[i]);
+        }
+    }
+
     HookAPI hook_env_t* get_env() {
         return env;
     }
@@ -82,7 +88,6 @@ namespace narchook {
             hooking_feature_t* feat = &archooks->features[i];
             if (feat->feature == feature) {
                 feat->is_enabled = enabled;
-                return;
             }
         }
     }

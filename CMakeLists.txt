@@ -29,7 +29,8 @@ if (NARCHOOK_BUILD_TARGET EQUAL 0)
             jni/narchook.cpp
             jni/ada.cpp
             jni/hooks/curl_hacks.cpp
-            jni/hooks/fake_deviceid.cpp)
+            jni/hooks/fake_deviceid.cpp
+            jni/hooks/net_debug.cpp)
 endif()
 
 add_compile_definitions(NARCHOOK_API_VERSION=${NARCHOOK_API_VERSION})

@@ -61,8 +61,6 @@ namespace narchook::mem {
     }
 
     EncryptedAPI void* find_pattern(dynlib_t* lib, uint8_t* pattern, size_t len) {
-        LOGD("Searching pattern %p with length %zu", pattern, len);
-        LOGD("Searching in range of %p to %p (size is: %p)", lib->base, (void*) ((uintptr_t) lib->base + lib->size), (void*) lib->size);
         return memmem(lib->base, lib->size, pattern, len);
     }
 

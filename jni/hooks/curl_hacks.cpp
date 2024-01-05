@@ -88,8 +88,10 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
         case CURLOPT_PINNEDPUBLICKEY: {
             if (disable_ssl_pinning) {
                 LOGI("cURL SSL pinning disabled!");
-                return CURL_SUCCESS;
+                return Arcaea::CURL::easy_setopt(curl_easy_handle, option, 0);
             }
+
+            break;
         }
 
         case CURLOPT_SSLCERT_BLOB: {
@@ -120,6 +122,8 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
             DUMP_CERT_FINALIZE:
                 return Arcaea::CURL::easy_setopt(curl_easy_handle, option, cert);
             }
+
+            break;
         }
 
         case CURLOPT_SSLKEYPASSWD: {
@@ -128,12 +132,11 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
             char* passwd = va_arg(param_copy, char*);
             LOGI("cURL using client certificate with password: %s", passwd);
             va_end(param_copy);
+            break;
         }
     }
 
-    uint64_t* result = Arc_CURL_vsetopt(curl_easy_handle, option, param);
-    LOGD("Http request done with code %zu", (size_t) result);
-    return result;
+    return Arc_CURL_vsetopt(curl_easy_handle, option, param);
 }
 
 namespace narchook::hooks::curl_hacks {
@@ -195,9 +198,9 @@ namespace narchook::hooks::curl_hacks {
         va_end(param);
     }
 
-    hooking_feature_t begin() {
+    void begin() {
         // clang-format off
-        return hooking_feature_t{
+        add_feature(hooking_feature_t {
             .feature        = FEAT_CURLHACKS,
             .is_enabled     = false,
             .hooking_method = HOOKING_USE_PATTERN_SEARCH,
@@ -214,7 +217,7 @@ namespace narchook::hooks::curl_hacks {
                 },OFFSET_NOT_SUPPORTED, NAME_NOT_SUPPORTED },
             .handle_hook    = (void*) Arc_CURL_vsetopt_callback,
             .original_fn    = (void**) &Arc_CURL_vsetopt
-        };
+        });
         // clang-format on
     }
 

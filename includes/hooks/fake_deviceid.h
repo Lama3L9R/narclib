@@ -16,7 +16,7 @@ namespace narchook::hooks::deviceid {
 
     void set_param(uint32_t param, ...);
 
-    hooking_feature_t begin();
+    void begin();
 
     void end();
 }// namespace narchook::hooks::deviceid

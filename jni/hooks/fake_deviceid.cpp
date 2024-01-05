@@ -48,9 +48,9 @@ namespace narchook::hooks::deviceid {
         va_end(args);
     }
 
-    hooking_feature_t begin() {
+    void begin() {
         // clang-format off
-        return hooking_feature_t {
+        add_feature(hooking_feature_t {
             .feature        = FEAT_FAKEDEVICEID,
             .is_enabled     = false,
             .hooking_method = HOOKING_USE_EXPORT_NAME,
@@ -67,7 +67,7 @@ namespace narchook::hooks::deviceid {
             },
             .handle_hook    = (void*) Arc_Game_setDeviceId_callback,
             .original_fn    = (void**) &Arc_Game_setDeviceId,
-        };
+        });
         // clang-format on
     }
 

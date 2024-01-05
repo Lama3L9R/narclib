@@ -35,7 +35,7 @@ namespace narchook::hooks::curl_hacks {
 
     void set_param(uint32_t param, ...);
 
-    hooking_feature_t begin();
+    void begin();
 
     void end();
 }// namespace narchook::hooks::curl_hacks

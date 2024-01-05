@@ -75,6 +75,7 @@ namespace narchook {
 
     void begin(const NativeAPIEntries* entries);
     void add_feature(hooking_feature_t feature);
+    void vadd_feature(hooking_feature_t features[], size_t hook_len);
     void hook_all(mem::dynlib_t lib);
 
     hook_env_t* get_env();

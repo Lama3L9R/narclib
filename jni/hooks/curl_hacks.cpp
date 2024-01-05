@@ -19,6 +19,7 @@ static char*                            custom_api_legacy   = nullptr;
 static bool                             disable_ssl_pinning = false;
 static char*                            dump_cert_path      = nullptr;
 static bool                             ended               = false;
+static bool                             approve_all_cert    = false;
 
 typedef struct curl_blob {
     void*        data;
@@ -45,8 +46,12 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
 
     switch (option) {
         case CURLOPT_SSL_VERIFYPEER: {
-            LOGI("cURL SSL verification disabled!");
-            return Arcaea::CURL::easy_setopt(curl_easy_handle, option, 0);
+            if (approve_all_cert) {
+                LOGI("cURL SSL verification disabled!");
+                return Arcaea::CURL::easy_setopt(curl_easy_handle, option, 0);
+            }
+
+            break;
         }
 
         case CURLOPT_URL: {
@@ -193,6 +198,9 @@ namespace narchook::hooks::curl_hacks {
                 utils::dynarr_uint32_remove(&option_deny_list, option);
                 break;
             }
+            case PARAM_CURLHACKS_APPROVEALLCERT: {
+                approve_all_cert = va_arg(param, uint32_t) != 0;
+            }
         }
 
         va_end(param);
@@ -290,4 +298,8 @@ extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_dumpCert(JNIE
 
 extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_toggleFeature(JNIEnv* env, jclass clazz, jboolean enabled) {
     narchook::set_feature_enabled(FEAT_CURLHACKS, enabled);
+}
+
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_CURLHacks_approveAllCertificate(JNIEnv* env, jclass clazz, jboolean enabled) {
+    narchook::hooks::curl_hacks::set_param(PARAM_CURLHACKS_APPROVEALLCERT, enabled);
 }

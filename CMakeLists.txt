@@ -5,7 +5,7 @@ project(narchook)
 #    COMPILE SETTINGS     #
 ###########################
 
-set(NARCHOOK_API_VERSION                     9) # integer   NArcHook API version
+set(NARCHOOK_API_VERSION                    10) # integer   NArcHook API version
 set(NARCHOOK_BUILD_TYPE                      1) # integer   Set to 1 for release builds
 set(NARCHOOK_BUILD_TARGET                    0) # integer   0 -> LSPosed, 1 -> Standalone library
 

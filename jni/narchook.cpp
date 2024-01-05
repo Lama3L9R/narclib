@@ -23,7 +23,7 @@ void on_module_loaded(const char* name, void* handle) {
 }
 
 extern "C" [[gnu::visibility("default")]] [[gnu::used]] NativeOnModuleLoaded native_init(const NativeAPIEntries* entries) {
-#if NARCHOOK_BUILD_TYPE == 0
+#ifdef NARCHOOK_BUILD_DEBUG
     LOGI("Welcome to narchook! Version: D%u", NARCHOOK_API_VERSION);
 #else
     LOGI("Welcome to narchook! Version: R%u", NARCHOOK_API_VERSION);

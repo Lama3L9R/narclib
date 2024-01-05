@@ -35,9 +35,11 @@ endif()
 add_compile_definitions(NARCHOOK_API_VERSION=${NARCHOOK_API_VERSION})
 add_compile_definitions(NARCHOOK_BUILD_TYPE=${NARCHOOK_BUILD_TYPE})
 
-if (NARCHOOK_BUILD_TYPE EQUAL 1)
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_compile_definitions(NARCHOOK_BUILD_RELEASE=1)
     add_compile_options(-O3 -fvisibility=hidden)
 else()
+    add_compile_definitions(NARCHOOK_BUILD_DEBUG=1)
     add_compile_options(-O0)
 endif ()
 
@@ -46,7 +48,7 @@ add_library(narchook SHARED ${SOURCES})
 target_link_libraries(narchook ${logcat})
 set_target_properties(narchook PROPERTIES OUTPUT_NAME narchook)
 
-if (NARCHOOK_BUILD_TYPE EQUAL 1)
+if (CMAKE_BUILD_TYPE STREQUAL "Release")
     message("Now building narchook (R${NARCHOOK_API_VERSION}) on ${CMAKE_HOST_SYSTEM_NAME}")
     if (CMAKE_HOST_WIN32)
         add_custom_command(TARGET narchook POST_BUILD

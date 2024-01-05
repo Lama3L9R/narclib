@@ -15,5 +15,3 @@ If ( -Not (Get-Command llvm-strip -ErrorAction SilentlyContinue)) {
 }
 
 llvm-strip -d -U -s $InputFile
-
-Write-Host "Minify completed!"

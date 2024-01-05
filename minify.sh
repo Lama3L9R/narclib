@@ -18,5 +18,5 @@ fi
 if ! command -v "llvm-strip" &> /dev/null; then
     error "llvm-strip is not found!"
 fi
-echo $INPUT_FILE
+
 llvm-strip -d -U -s $INPUT_FILE

@@ -13,8 +13,8 @@
 
 namespace narchook::archash {
 
-    void sponge(uint96_t* raw, uint96_t** result);
-    void hash(char* raw, size_t len, char** result);
+    void sponge(utils::uint96_t* raw, utils::uint96_t** result);
+    void hash(const char* raw, size_t len, char** result);
 
 }
 

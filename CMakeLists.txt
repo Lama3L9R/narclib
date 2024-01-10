@@ -7,7 +7,7 @@ project(narchook)
 
 set(NARCHOOK_API_VERSION                    10) # integer   NArcHook API version
 set(NARCHOOK_BUILD_TYPE                      1) # integer   Set to 1 for release builds
-set(NARCHOOK_BUILD_TARGET                    0) # integer   0 -> LSPosed, 1 -> Standalone library
+set(NARCHOOK_BUILD_TARGET                    1) # integer   0 -> LSPosed, 1 -> Standalone library
 
 ###########################
 #    COMMON SETTINGS      #
@@ -19,13 +19,14 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(includes)
 
-set(SOURCES jni/japi.cpp
+set(SOURCES
         jni/hookapi.cpp
         jni/mem.cpp
         jni/utils.cpp)
 
 if (NARCHOOK_BUILD_TARGET EQUAL 0)
     set(SOURCES ${SOURCES}
+            jni/japi.cpp
             jni/narchook.cpp
             jni/ada.cpp
             jni/hooks/curl_hacks.cpp
@@ -33,7 +34,8 @@ if (NARCHOOK_BUILD_TARGET EQUAL 0)
             jni/hooks/net_debug.cpp)
 else()
     set (SOURCES ${SOURCES}
-            archash/uint96.cpp)
+            jni/archash/uint96.cpp
+            jni/archash/archash.cpp)
 endif()
 
 add_compile_definitions(NARCHOOK_API_VERSION=${NARCHOOK_API_VERSION})

@@ -7,14 +7,13 @@
 #ifndef NARCHOOK_ARCHASH_H
 #define NARCHOOK_ARCHASH_H
 
+#include "narchook.h"
 #include <cstdint>
 #include <cstring>
-#include "api.h"
-#include "archash/uint96.h"
-#include "mem.h"
 
 #ifdef NARCHOOK_PLATFORM_MSVC
 #include "Windows.h"
+#include "uint96.h"
 #endif
 
 using namespace narchook::utils;

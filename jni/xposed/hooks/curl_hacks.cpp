@@ -2,11 +2,9 @@
 // Created by lamadaemon on 12/2/2023.
 //
 
-#include "hooks/curl_hacks.h"
-#include "ada.h"
-#include "hooks/data.h"
-#include "log.h"
-#include "utils.h"
+#include "narchook.h"
+#include "xposed/hooks/data.h"
+#include "utils/ada.h"
 #include <jni.h>
 
 uint64_t* (*Arc_CURL_vsetopt)(void* curl_easy_handle, int32_t option, va_list param);

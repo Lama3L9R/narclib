@@ -5,7 +5,7 @@
 #ifndef NARCHOOK_FAKE_DEVICEID_H
 #define NARCHOOK_FAKE_DEVICEID_H
 
-#include "hookapi.h"
+#include "narchook.h"
 
 #define FEAT_FAKEDEVICEID 1
 

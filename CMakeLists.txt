@@ -20,24 +20,27 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(includes)
 
-set(SOURCES jni/mem.cpp jni/utils.cpp)
+set(SOURCES jni/narchook.cpp
+        jni/utils/mem.cpp
+        jni/utils/utils.cpp)
 
 if (NARCHOOK_BUILD_TARGET EQUAL 0)
     set(SOURCES ${SOURCES}
-            jni/japi.cpp
-            jni/narchook.cpp
-            jni/ada.cpp
-            jni/hooks/curl_hacks.cpp
-            jni/hooks/fake_deviceid.cpp
-            jni/hooks/net_debug.cpp
-            jni/hookapi.cpp)
+            jni/xposed/javactl.cpp
+            jni/xposed/xposedinit.cpp
+            jni/utils/ada.cpp
+            jni/xposed/hooks/curl_hacks.cpp
+            jni/xposed/hooks/fake_deviceid.cpp
+            jni/xposed/hooks/net_debug.cpp
+            jni/xposed/hookapi.cpp)
 else()
     set (SOURCES ${SOURCES}
             jni/archash/uint96.cpp
             jni/archash/archash.cpp
-            jni/base64.cpp)
+            jni/utils/base64.cpp)
 endif()
 
+add_compile_definitions(NARCHOOK_BUILD_VARIANT=${NARCHOOK_BUILD_TARGET})
 add_compile_definitions(NARCHOOK_API_VERSION=${NARCHOOK_API_VERSION})
 add_compile_definitions(NARCHOOK_BUILD_TYPE=${NARCHOOK_BUILD_TYPE})
 

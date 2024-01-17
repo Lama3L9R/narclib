@@ -2,9 +2,7 @@
 // Created by lamadaemon on 11/30/2023.
 //
 
-#include "hookapi.h"
-#include "log.h"
-#include "mem.h"
+#include "narchook.h"
 #include <cstdlib>
 
 namespace narchook {

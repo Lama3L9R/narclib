@@ -8,9 +8,7 @@
  * Adapted by lamadaemon
  */
 
-#include <cstdint>
-#include "mem.h"
-#include "base64.h"
+#include "narchook.h"
 
 using namespace narchook::utils;
 

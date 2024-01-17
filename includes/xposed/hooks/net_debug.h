@@ -5,7 +5,7 @@
 #ifndef NARCHOOK_NET_DEBUG_H
 #define NARCHOOK_NET_DEBUG_H
 
-#include "hookapi.h"
+#include "narchook.h"
 
 #define FEAT_NETDEBUG_EASYPERFORM 2
 #define FEAT_NETDEBUG_SSLGETERROR 3

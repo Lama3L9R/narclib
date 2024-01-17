@@ -5,9 +5,8 @@
 #ifndef NARCHOOK_HOOKAPI_H
 #define NARCHOOK_HOOKAPI_H
 
+#include "narchook.h"
 #include "lsp.h"
-#include "mem.h"
-#include "api.h"
 
 #define HOOKING_USE_OFFSET         0
 #define HOOKING_USE_PATTERN_SEARCH 1

@@ -1,6 +1,5 @@
 
-#include "archash/archash.h"
-#include "base64.h"
+#include "narchook.h"
 
 #ifdef NARCHOOK_PLATFORM_MSVC
 #include "Windows.h"

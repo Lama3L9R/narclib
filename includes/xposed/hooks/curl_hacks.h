@@ -8,7 +8,7 @@
 #include <cstdarg>
 #include <cstdint>
 
-#include "hookapi.h"
+#include "narchook.h"
 
 #define FEAT_CURLHACKS 0
 

@@ -5,9 +5,8 @@
 #ifndef NARCHOOK_MEM_H
 #define NARCHOOK_MEM_H
 
-#include "mem.h"
-#include "api.h"
-#include "log.h"
+#include "narchook.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>

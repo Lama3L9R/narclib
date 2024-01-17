@@ -42,6 +42,8 @@ namespace narchook::utils {
      
         result.low = a.low << n | a.high >> (32 - n);
         result.high = a.high << n | a.low >> (64 - n);
+
+        return result;
     }
 
 

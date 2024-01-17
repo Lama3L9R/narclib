@@ -9,10 +9,8 @@
 namespace narchook::utils {
     dynarr_uint32 dynarr_uint32_init() {
         // clang-format off
-        return dynarr_uint32_t {
-                .len  = 0,
-                .data = nullptr,
-        };
+        return dynarr_uint32_t { 0, nullptr };
+        // clang-format on
     }
 
     void dynarr_uint32_append(dynarr_uint32_t* arr, uint32_t val) {

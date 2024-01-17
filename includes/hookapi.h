@@ -7,9 +7,7 @@
 
 #include "lsp.h"
 #include "mem.h"
-
-#define HookAPI [[gnu::visibility("default")]] [[gnu::used]]
-#define EncryptedAPI [[clang::always_inline]] [[gnu::used]] inline
+#include "api.h"
 
 #define HOOKING_USE_OFFSET         0
 #define HOOKING_USE_PATTERN_SEARCH 1

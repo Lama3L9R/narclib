@@ -75,7 +75,7 @@ set(ANDROID_PLATFORM 30)
 endif ()
 
 
-add_library(narchash SHARED ${NARCHASH_SOURCES})
+add_library(narchash STATIC ${NARCHASH_SOURCES})
 set_target_properties(narchash PROPERTIES OUTPUT_NAME narchash)
 target_include_directories(narchash PRIVATE ${NARCHASH_INCLUDES})
 
@@ -94,27 +94,31 @@ endif ()
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     message("Now building narchook (R${NARCHOOK_API_VERSION}) on ${CMAKE_HOST_SYSTEM_NAME}")
     if (CMAKE_HOST_WIN32)
-        add_custom_command(TARGET narchook POST_BUILD
-                COMMAND powershell.exe
-                ARGS -File ${CMAKE_CURRENT_SOURCE_DIR}/minify.ps1 $<TARGET_FILE:narchook>
-                COMMENT "Running minify script..."
-        )
+        if (NARCHOOK_BUILD_PLATFORM EQUAL 0)
+            add_custom_command(TARGET narchook POST_BUILD
+                    COMMAND powershell.exe
+                    ARGS -File ${CMAKE_CURRENT_SOURCE_DIR}/minify.ps1 $<TARGET_FILE:narchook>
+                    COMMENT "Running minify script..."
+            )
+        endif ()
 
         add_custom_command(TARGET narchash POST_BUILD
                 COMMAND powershell.exe
-                ARGS -File ${CMAKE_CURRENT_SOURCE_DIR}/minify.ps1 $<TARGET_FILE:narchook>
+                ARGS -File ${CMAKE_CURRENT_SOURCE_DIR}/minify.ps1 $<TARGET_FILE:narchash>
                 COMMENT "Running minify script..."
         )
     else ()
-        add_custom_command(TARGET narchook POST_BUILD
+        if (NARCHOOK_BUILD_PLATFORM EQUAL 0)
+            add_custom_command(TARGET narchook POST_BUILD
                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/minify.sh
                 ARGS $<TARGET_FILE:narchook>
                 COMMENT "Running minify script..."
-        )
+            )
+        endif ()
 
         add_custom_command(TARGET narchash POST_BUILD
                 COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/minify.sh
-                ARGS $<TARGET_FILE:narchook>
+                ARGS $<TARGET_FILE:narchash>
                 COMMENT "Running minify script..."
         )
     endif ()

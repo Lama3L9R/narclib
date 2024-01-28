@@ -1,8 +1,8 @@
 //
 // Created by lamadaemon on 12/2/2023.
 //
+#include "hooks/data.h"
 #include "narchook.h"
-#include "xposed/hooks/data.h"
 #include <jni.h>
 
 void* (*Arc_Game_setDeviceId)(JNIEnv* env, jclass clazz, jstring id);

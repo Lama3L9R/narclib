@@ -6,7 +6,6 @@
 #define NARCHOOK_HOOKAPI_H
 
 #include "narchook.h"
-#include "lsp.h"
 
 #define HOOKING_USE_OFFSET         0
 #define HOOKING_USE_PATTERN_SEARCH 1
@@ -41,7 +40,7 @@ namespace narchook {
     struct hook_env {
         narchook_t*   narchook;
         void*         base;
-        mem::dynlib_t lib;
+        narcutils::mem::dynlib_t lib;
         HookFunType   hook_fn;
         UnhookFunType unhook_fn;
     };
@@ -73,7 +72,7 @@ namespace narchook {
     void begin(const NativeAPIEntries* entries);
     void add_feature(hooking_feature_t feature);
     void vadd_feature(hooking_feature_t features[], size_t hook_len);
-    void hook_all(mem::dynlib_t lib);
+    void hook_all(narcutils::mem::dynlib_t lib);
 
     hook_env_t* get_env();
 

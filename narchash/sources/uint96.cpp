@@ -1,6 +1,6 @@
-#include "archash/uint96.h"
+#include "uint96.h"
 
-namespace narchook::utils {
+namespace narcutils::utils {
 
     uint96_t u96_and(uint96_t a, uint96_t b) {
         uint96_t result;

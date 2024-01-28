@@ -50,7 +50,7 @@ namespace narchook {
 
     HookAPI void add_feature(hooking_feature_t feature) {
         if (archooks->features == nullptr) {
-            archooks->features     = (hooking_feature_t*) mem::alloc(sizeof(hooking_feature_t));
+            archooks->features     = (hooking_feature_t*) narcutils::mem::alloc(sizeof(hooking_feature_t));
             archooks->features[0]  = feature;
             archooks->features_len = 1;
         } else {
@@ -90,7 +90,7 @@ namespace narchook {
         }
     }
 
-    HookAPI void hook_all(mem::dynlib_t lib) {
+    HookAPI void hook_all(narcutils::mem::dynlib_t lib) {
         env->lib  = lib;
         env->base = env->lib.base;
 
@@ -116,13 +116,13 @@ namespace narchook {
 
                         switch (param->method) {
                             case HOOKING_USE_OFFSET:
-                                hook_fn = mem::from_offset(&env->lib, target.offset);
+                                hook_fn = narcutils::mem::from_offset(&env->lib, target.offset);
                                 break;
                             case HOOKING_USE_PATTERN_SEARCH:
-                                hook_fn = mem::find_pattern(&env->lib, target.search.pattern, target.search.len);
+                                hook_fn = narcutils::mem::find_pattern(&env->lib, target.search.pattern, target.search.len);
                                 break;
                             case HOOKING_USE_EXPORT_NAME:
-                                hook_fn = mem::from_export_name(&env->lib, target.named.name);
+                                hook_fn = narcutils::mem::from_export_name(&env->lib, target.named.name);
                                 break;
                         }
 

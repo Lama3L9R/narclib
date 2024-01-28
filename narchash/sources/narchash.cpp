@@ -1,13 +1,9 @@
+#include "narchash.h"
+#include "narcutils.h"
 
-#include "narchook.h"
+using namespace narcutils::utils;
 
-#ifdef NARCHOOK_PLATFORM_MSVC
-#include "Windows.h"
-#endif
-
-using namespace narchook::utils;
-
-namespace narchook::archash {
+namespace narchash {
 
     uint8_t generate_challenge(char* path, char* body, uint64_t ts, arc_salt_t salt, char** result) {
         uint64_t timestamp = ts;
@@ -19,7 +15,7 @@ namespace narchook::archash {
             }
         }
 
-        char* buff = (char*) mem::alloc(challenge_size());
+        char* buff = (char*) narcutils::mem::alloc(challenge_size());
         *((uint64_t*) buff) = timestamp;
 
         char* buff_pt1 = buff + sizeof(uint64_t);
@@ -54,4 +50,7 @@ namespace narchook::archash {
         return VERIFY_NO_ERROR;
     }
 
+    HookAPI uint32_t get_api_version() {
+        return 1; // TODO
+    }
 }

@@ -5,13 +5,13 @@
 #ifndef NARCHOOK_MEM_H
 #define NARCHOOK_MEM_H
 
-#include "narchook.h"
+#include "narcutils.h"
 
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
-namespace narchook::mem {
+namespace narcutils::mem {
 
 #ifdef NARCHOOK_PLATFORM_ANDROID
 #include <dlfcn.h>

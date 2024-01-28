@@ -5,15 +5,16 @@
 #include <string>
 
 #include "narchook.h"
-#include "xposed/hooks/data.h"
+#include "narcutils.h"
+#include "hooks/data.h"
 
 #ifdef NARCHOOK_BUILD_DEBUG
-#include "xposed/hooks/net_debug.h"
+#include "hooks/net_debug.h"
 #endif
 
 void on_module_loaded(const char* name, void* handle) {
-    if (narchook::utils::ends_with(std::string(name), std::string(TARGET_NAME))) {
-        narchook::mem::dynlib_t arcaea = narchook::mem::find_library(TARGET_NAME, handle);
+    if (narcutils::utils::ends_with(std::string(name), std::string(TARGET_NAME))) {
+        narcutils::mem::dynlib_t arcaea = narcutils::mem::find_library(TARGET_NAME, handle);
         LOGI("Base is %p. Doors are now open!", arcaea.base);
 
         narchook::hook_all(arcaea);

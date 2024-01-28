@@ -8,9 +8,9 @@
  * Adapted by lamadaemon
  */
 
-#include "narchook.h"
+#include "narcutils.h"
 
-using namespace narchook::utils;
+using namespace narcutils::utils;
 
 static const unsigned char base64_table[65] =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -40,7 +40,7 @@ unsigned char * base64::encode(const unsigned char *src, size_t len,
     olen++; /* nul termination */
     if (olen < len)
         return NULL; /* integer overflow */
-    out = (unsigned char *) narchook::mem::alloc(olen);
+    out = (unsigned char *) narcutils::mem::alloc(olen);
     if (out == NULL)
         return NULL;
 
@@ -117,7 +117,7 @@ unsigned char * base64::decode(const unsigned char *src, size_t len,
         return NULL;
 
     olen = count / 4 * 3;
-    pos = out = (unsigned char*) narchook::mem::alloc(olen);
+    pos = out = (unsigned char*) narcutils::mem::alloc(olen);
     if (out == NULL)
         return NULL;
 

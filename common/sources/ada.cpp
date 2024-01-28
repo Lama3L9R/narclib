@@ -1,8 +1,8 @@
 /* clang-format off */
 /* auto-generated on 2023-11-19 13:35:02 -0500. Do not edit! */
-/* begin file src/ada.cpp */
-#include "utils/ada.h"
-/* begin file src/checkers.cpp */
+/* begin file sources/ada.cpp */
+#include "ada.h"
+/* begin file sources/checkers.cpp */
 #include <algorithm>
 
 namespace ada::checkers {
@@ -129,14 +129,14 @@ ada_really_inline constexpr bool verify_dns_length(
   return true;
 }
 }  // namespace ada::checkers
-/* end file src/checkers.cpp */
-/* begin file src/unicode.cpp */
+/* end file sources/checkers.cpp */
+/* begin file sources/unicode.cpp */
 
 ADA_PUSH_DISABLE_ALL_WARNINGS
-/* begin file src/ada_idna.cpp */
+/* begin file sources/ada_idna.cpp */
 /* auto-generated on 2023-09-19 15:58:51 -0400. Do not edit! */
-/* begin file src/idna.cpp */
-/* begin file src/unicode_transcoding.cpp */
+/* begin file sources/idna.cpp */
+/* begin file sources/unicode_transcoding.cpp */
 
 #include <algorithm>
 #include <cstdint>
@@ -318,14 +318,14 @@ size_t utf32_to_utf8(const char32_t* buf, size_t len, char* utf8_output) {
   return utf8_output - start;
 }
 }  // namespace ada::idna
-/* end file src/unicode_transcoding.cpp */
-/* begin file src/mapping.cpp */
+/* end file sources/unicode_transcoding.cpp */
+/* begin file sources/mapping.cpp */
 
 #include <algorithm>
 #include <array>
 #include <string>
 
-/* begin file src/mapping_tables.cpp */
+/* begin file sources/mapping_tables.cpp */
 // IDNA  15.0.0
 
 // clang-format off
@@ -2725,7 +2725,7 @@ const uint32_t table[8000][2] =
 } // namespace ada::idna
 #endif // ADA_IDNA_TABLES_H
 
-/* end file src/mapping_tables.cpp */
+/* end file sources/mapping_tables.cpp */
 
 namespace ada::idna {
 
@@ -2847,9 +2847,9 @@ std::u32string map(std::u32string_view input) {
   return answer;
 }
 }  // namespace ada::idna
-/* end file src/mapping.cpp */
-/* begin file src/normalization.cpp */
-/* begin file src/normalization_tables.cpp */
+/* end file sources/mapping.cpp */
+/* begin file sources/normalization.cpp */
+/* begin file sources/normalization_tables.cpp */
 // IDNA  15.0.0
 
 // clang-format off
@@ -7746,7 +7746,7 @@ const char32_t composition_data[1883] = {
 
 }  // namespace ada::idna
 #endif  // ADA_IDNA_NORMALIZATION_TABLES_H
-/* end file src/normalization_tables.cpp */
+/* end file sources/normalization_tables.cpp */
 
 namespace ada::idna {
 
@@ -7961,8 +7961,8 @@ void normalize(std::u32string& input) {
 }
 
 }  // namespace ada::idna
-/* end file src/normalization.cpp */
-/* begin file src/punycode.cpp */
+/* end file sources/normalization.cpp */
+/* begin file sources/punycode.cpp */
 
 #include <cstdint>
 
@@ -8182,8 +8182,8 @@ bool utf32_to_punycode(std::u32string_view input, std::string &out) {
 }
 
 }  // namespace ada::idna
-/* end file src/punycode.cpp */
-/* begin file src/validity.cpp */
+/* end file sources/punycode.cpp */
+/* begin file sources/validity.cpp */
 #include <algorithm>
 #include <string_view>
 
@@ -9514,8 +9514,8 @@ bool is_label_valid(const std::u32string_view label) {
 }
 
 }  // namespace ada::idna
-/* end file src/validity.cpp */
-/* begin file src/to_ascii.cpp */
+/* end file sources/validity.cpp */
+/* begin file sources/to_ascii.cpp */
 
 #include <algorithm>
 #include <cstdint>
@@ -9727,8 +9727,8 @@ std::string to_ascii(std::string_view ut8_string) {
   return out;
 }
 }  // namespace ada::idna
-/* end file src/to_ascii.cpp */
-/* begin file src/to_unicode.cpp */
+/* end file sources/to_ascii.cpp */
+/* begin file sources/to_unicode.cpp */
 
 #include <algorithm>
 #include <string>
@@ -9782,9 +9782,9 @@ std::string to_unicode(std::string_view input) {
   return output;
 }
 }  // namespace ada::idna
-/* end file src/to_unicode.cpp */
-/* end file src/idna.cpp */
-/* end file src/ada_idna.cpp */
+/* end file sources/to_unicode.cpp */
+/* end file sources/idna.cpp */
+/* end file sources/ada_idna.cpp */
 ADA_POP_DISABLE_WARNINGS
 
 #include <algorithm>
@@ -10266,8 +10266,8 @@ std::string to_unicode(std::string_view input) {
 }
 
 }  // namespace ada::unicode
-/* end file src/unicode.cpp */
-/* begin file src/serializers.cpp */
+/* end file sources/unicode.cpp */
+/* begin file sources/serializers.cpp */
 
 #include <array>
 #include <string>
@@ -10347,8 +10347,8 @@ std::string ipv4(const uint64_t address) noexcept {
 }
 
 }  // namespace ada::serializers
-/* end file src/serializers.cpp */
-/* begin file src/implementation.cpp */
+/* end file sources/serializers.cpp */
+/* begin file sources/implementation.cpp */
 #include <string_view>
 
 
@@ -10419,8 +10419,8 @@ ada_warn_unused std::string to_string(ada::encoding_type type) {
 }
 
 }  // namespace ada
-/* end file src/implementation.cpp */
-/* begin file src/helpers.cpp */
+/* end file sources/implementation.cpp */
+/* begin file sources/helpers.cpp */
 
 #include <algorithm>
 #include <charconv>
@@ -11212,8 +11212,8 @@ ada_warn_unused std::string to_string(ada::state state) {
 }
 #undef ada_make_uint8x16_t
 }  // namespace ada
-/* end file src/helpers.cpp */
-/* begin file src/url.cpp */
+/* end file sources/helpers.cpp */
+/* begin file sources/url.cpp */
 
 #include <numeric>
 #include <algorithm>
@@ -11801,8 +11801,8 @@ ada_really_inline void url::parse_path(std::string_view input) {
 }
 
 }  // namespace ada
-/* end file src/url.cpp */
-/* begin file src/url-getters.cpp */
+/* end file sources/url.cpp */
+/* begin file sources/url-getters.cpp */
 /**
  * @file url-getters.cpp
  * Includes all the getters of `ada::url`
@@ -11895,8 +11895,8 @@ namespace ada {
 }
 
 }  // namespace ada
-/* end file src/url-getters.cpp */
-/* begin file src/url-setters.cpp */
+/* end file sources/url-getters.cpp */
+/* begin file sources/url-setters.cpp */
 /**
  * @file url-setters.cpp
  * Includes all the setters of `ada::url`
@@ -12132,8 +12132,8 @@ bool url::set_href(const std::string_view input) {
 }
 
 }  // namespace ada
-/* end file src/url-setters.cpp */
-/* begin file src/parser.cpp */
+/* end file sources/url-setters.cpp */
+/* begin file sources/parser.cpp */
 
 #include <numeric>
 #include <limits>
@@ -13042,8 +13042,8 @@ template url_aggregator parse_url<url_aggregator>(
     std::string_view user_input, const url_aggregator* base_url = nullptr);
 
 }  // namespace ada::parser
-/* end file src/parser.cpp */
-/* begin file src/url_components.cpp */
+/* end file sources/parser.cpp */
+/* begin file sources/url_components.cpp */
 
 #include <numeric>
 #include <string>
@@ -13168,8 +13168,8 @@ namespace ada {
 }
 
 }  // namespace ada
-/* end file src/url_components.cpp */
-/* begin file src/url_aggregator.cpp */
+/* end file sources/url_components.cpp */
+/* begin file sources/url_aggregator.cpp */
 
 #include <string>
 #include <string_view>
@@ -14875,8 +14875,8 @@ inline void url_aggregator::consume_prepared_path(std::string_view input) {
   }
 }
 }  // namespace ada
-/* end file src/url_aggregator.cpp */
-/* begin file src/ada_c.cpp */
+/* end file sources/url_aggregator.cpp */
+/* begin file sources/ada_c.cpp */
 
 ada::result<ada::url_aggregator>& get_instance(void* result) noexcept {
   return *(ada::result<ada::url_aggregator>*)result;
@@ -15595,6 +15595,6 @@ bool ada_search_params_entries_iter_has_next(
 }
 
 }  // extern "C"
-/* end file src/ada_c.cpp */
-/* end file src/ada.cpp */
+/* end file sources/ada_c.cpp */
+/* end file sources/ada.cpp */
 /* clang-format on */

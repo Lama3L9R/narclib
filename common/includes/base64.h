@@ -7,7 +7,7 @@
 
 #include <cstdint>
 
-namespace narchook::utils::base64 {
+namespace narcutils::utils::base64 {
     /**
      * encode - Base64 encode
      * @src: Data to be encoded

@@ -3,13 +3,13 @@
 //
 
 #include "jni.h"
-#include "narchook.h"
+#include "narchash.h"
 
-extern "C" JNIEXPORT jint JNICALL Java_icu_lama_narchook_NArcHook_getVersion(JNIEnv* env, jclass clazz) {
-    return narchook::get_api_version();
+extern "C" JNIEXPORT jint JNICALL Java_icu_lama_narclib_NArcHash_getVersion(JNIEnv* env, jclass clazz) {
+    return narchash::get_api_version();
 }
 
-extern "C" JNIEXPORT jbyteArray JNICALL Java_icu_lama_narchook_NArcHook_generateChallenge(JNIEnv* env, jclass clazz,
+extern "C" JNIEXPORT jbyteArray JNICALL Java_icu_lama_narclib_NArcHash_generateChallenge(JNIEnv* env, jclass clazz,
                                                                                     jstring path,jstring body,jlong timestamp,jbyteArray salt) {
     char*    path_c = (char*) env->GetStringUTFChars(path, 0);
     char*    body_c = (char*) env->GetStringUTFChars(body, 0);
@@ -18,7 +18,7 @@ extern "C" JNIEXPORT jbyteArray JNICALL Java_icu_lama_narchook_NArcHook_generate
     char*   result;
     uint8_t err;
 
-    if ((err = narchook::archash::generate_challenge(path_c, body_c, timestamp, salt_c, &result)) != GENERATE_SUCCESS) {
+    if ((err = narchash::generate_challenge(path_c, body_c, timestamp, salt_c, &result)) != GENERATE_SUCCESS) {
         jclass exception = env->FindClass("java/lang/RuntimeException");
 
         if (exception == NULL) {
@@ -32,8 +32,8 @@ extern "C" JNIEXPORT jbyteArray JNICALL Java_icu_lama_narchook_NArcHook_generate
         return NULL;
     }
 
-    jbyteArray rtn = env->NewByteArray(narchook::archash::challenge_size());
-    env->SetByteArrayRegion(rtn, 0, narchook::archash::challenge_size(), (const jbyte*) result);
+    jbyteArray rtn = env->NewByteArray(narchash::challenge_size());
+    env->SetByteArrayRegion(rtn, 0, narchash::challenge_size(), (const jbyte*) result);
 
     env->ReleaseStringUTFChars(path, path_c);
     env->ReleaseStringUTFChars(body, body_c);
@@ -42,7 +42,7 @@ extern "C" JNIEXPORT jbyteArray JNICALL Java_icu_lama_narchook_NArcHook_generate
     return rtn;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_NArcHook_verifyChallenge(JNIEnv* env, jclass clazz,
+extern "C" JNIEXPORT void JNICALL Java_icu_lama_narclib_NArcHash_verifyChallenge(JNIEnv* env, jclass clazz,
                                                                                   jstring path, jstring body, jlong timestamp, jbyteArray salt, jbyteArray challenge) {
     char*    path_c      = (char*) env->GetStringUTFChars(path, 0);
     char*    body_c      = (char*) env->GetStringUTFChars(body, 0);
@@ -50,7 +50,7 @@ extern "C" JNIEXPORT void JNICALL Java_icu_lama_narchook_NArcHook_verifyChalleng
     char*    challenge_c = (char*) env->GetByteArrayElements(challenge, 0);
 
     uint8_t result;
-    if ((result = narchook::archash::verify_challenge(challenge_c, path_c, body_c, timestamp, salt_c)) != VERIFY_NO_ERROR) {
+    if ((result = narchash::verify_challenge(challenge_c, path_c, body_c, timestamp, salt_c)) != VERIFY_NO_ERROR) {
         jclass exception = env->FindClass("java/lang/RuntimeException");
 
         if (exception == NULL) {

@@ -2,11 +2,12 @@
 // Created by lamadaemon on 12/2/2023.
 //
 
-#include "narchook.h"
+#include "narcutils.h"
+#include "utils.h"
 #include <cstdlib>
 #include <string>
 
-namespace narchook::utils {
+namespace narcutils::utils {
     dynarr_uint32 dynarr_uint32_init() {
         // clang-format off
         return dynarr_uint32_t { 0, nullptr };

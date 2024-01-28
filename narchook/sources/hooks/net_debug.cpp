@@ -2,9 +2,9 @@
 // Created by lamadaemon on 1/4/2024.
 //
 
+#include "hooks/net_debug.h"
+#include "hooks/data.h"
 #include "narchook.h"
-#include "xposed/hooks/net_debug.h"
-#include "xposed/hooks/data.h"
 
 static const uint8_t easy_perform_pattern[] = CURL_EASY_PERFORM_PATTERN;
 

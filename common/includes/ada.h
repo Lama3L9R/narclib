@@ -164,7 +164,7 @@ std::string to_unicode(std::string_view input);
  * @file character_sets-inl.h
  * @brief Definitions of the character sets used by unicode functions.
  * @author Node.js
- * @see https://github.com/nodejs/node/blob/main/src/node_url_tables.cc
+ * @see https://github.com/nodejs/node/blob/main/sources/node_url_tables.cc
  */
 #ifndef ADA_CHARACTER_SETS_INL_H
 #define ADA_CHARACTER_SETS_INL_H
@@ -174,7 +174,7 @@ std::string to_unicode(std::string_view input);
  * @file character_sets.h
  * @brief Declaration of the character sets used by unicode functions.
  * @author Node.js
- * @see https://github.com/nodejs/node/blob/main/src/node_url_tables.cc
+ * @see https://github.com/nodejs/node/blob/main/sources/node_url_tables.cc
  */
 #ifndef ADA_CHARACTER_SETS_H
 #define ADA_CHARACTER_SETS_H
@@ -4586,21 +4586,21 @@ ada_really_inline unsigned constexpr convert_hex_to_binary(char c) noexcept;
  *
  * @todo It would be faster as noexcept maybe, but it could be unsafe since.
  * @author Node.js
- * @see https://github.com/nodejs/node/blob/main/src/node_url.cc#L245
+ * @see https://github.com/nodejs/node/blob/main/sources/node_url.cc#L245
  * @see https://encoding.spec.whatwg.org/#utf-8-decode-without-bom
  */
 std::string percent_decode(std::string_view input, size_t first_percent);
 
 /**
  * Returns a percent-encoding string whether percent encoding was needed or not.
- * @see https://github.com/nodejs/node/blob/main/src/node_url.cc#L226
+ * @see https://github.com/nodejs/node/blob/main/sources/node_url.cc#L226
  */
 std::string percent_encode(std::string_view input,
                            const uint8_t character_set[]);
 /**
  * Returns a percent-encoded string version of input, while starting the percent
  * encoding at the provided index.
- * @see https://github.com/nodejs/node/blob/main/src/node_url.cc#L226
+ * @see https://github.com/nodejs/node/blob/main/sources/node_url.cc#L226
  */
 std::string percent_encode(std::string_view input,
                            const uint8_t character_set[], size_t index);
@@ -4609,7 +4609,7 @@ std::string percent_encode(std::string_view input,
  * the percent-encoded content in 'out'. If the boolean 'append' is set to
  * true, the content is appended to 'out'.
  * If percent encoding is not needed, out is left unchanged.
- * @see https://github.com/nodejs/node/blob/main/src/node_url.cc#L226
+ * @see https://github.com/nodejs/node/blob/main/sources/node_url.cc#L226
  */
 template <bool append>
 bool percent_encode(std::string_view input, const uint8_t character_set[],
@@ -4796,7 +4796,7 @@ struct url_aggregator : url_base {
    * @return a constant reference to the underlying component attribute.
    *
    * @see
-   * https://github.com/servo/rust-url/blob/b65a45515c10713f6d212e6726719a020203cc98/url/src/quirks.rs#L31
+   * https://github.com/servo/rust-url/blob/b65a45515c10713f6d212e6726719a020203cc98/url/sources/quirks.rs#L31
    */
   [[nodiscard]] ada_really_inline const ada::url_components &get_components()
       const noexcept;
@@ -5326,7 +5326,7 @@ struct url : url_base {
    * @return a newly constructed component.
    *
    * @see
-   * https://github.com/servo/rust-url/blob/b65a45515c10713f6d212e6726719a020203cc98/url/src/quirks.rs#L31
+   * https://github.com/servo/rust-url/blob/b65a45515c10713f6d212e6726719a020203cc98/url/sources/quirks.rs#L31
    */
   [[nodiscard]] ada_really_inline ada::url_components get_components()
       const noexcept;

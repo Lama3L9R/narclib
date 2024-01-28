@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace narchook::utils {
+namespace narcutils::utils {
     typedef struct dynarr_uint32 {
         size_t len;
         uint32_t* data;

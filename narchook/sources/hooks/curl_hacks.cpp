@@ -3,15 +3,14 @@
 //
 
 #include "narchook.h"
-#include "xposed/hooks/data.h"
-#include "utils/ada.h"
+#include "hooks/data.h"
 #include <jni.h>
 
 uint64_t* (*Arc_CURL_vsetopt)(void* curl_easy_handle, int32_t option, va_list param);
 
 static const uint8_t pattern[] = CURL_VSETOPT_PATTERN;
 
-static narchook::utils::dynarr_uint32_t option_deny_list    = narchook::utils::dynarr_uint32_init();
+static narcutils::utils::dynarr_uint32_t option_deny_list    = narcutils::utils::dynarr_uint32_init();
 static char*                            custom_api_v2       = nullptr;
 static char*                            custom_api_legacy   = nullptr;
 static bool                             disable_ssl_pinning = false;
@@ -34,7 +33,7 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
         return Arc_CURL_vsetopt(curl_easy_handle, option, param);
     }
 
-    if (narchook::utils::dynarr_uint32_contains(&option_deny_list, option)) {
+    if (narcutils::utils::dynarr_uint32_contains(&option_deny_list, option)) {
         LOGD("Invoke <CALL-REJECTED> CURL_vsetopt: %d", option);
 
         return CURL_SUCCESS;
@@ -72,7 +71,7 @@ uint64_t* Arc_CURL_vsetopt_callback(void* curl_easy_handle, int32_t option, va_l
                     }
                 }
 
-                char* new_url = narchook::utils::stringview_to_cstr(url->get_href());
+                char* new_url = narcutils::utils::stringview_to_cstr(url->get_href());
                 LOGI("Overriding url: %s -> %s", url_raw, new_url);
 
                 uint64_t* result = Arcaea::CURL::easy_setopt(curl_easy_handle, option, new_url);
@@ -188,12 +187,12 @@ namespace narchook::hooks::curl_hacks {
             }
             case PARAM_CURLHACKS_ADDDENYLISTE: {
                 uint32_t option = va_arg(param, uint32_t);
-                utils::dynarr_uint32_append(&option_deny_list, option);
+                narcutils::utils::dynarr_uint32_append(&option_deny_list, option);
                 break;
             }
             case PARAM_CURLHACKS_REMOVEDENYLISTE: {
                 uint32_t option = va_arg(param, uint32_t);
-                utils::dynarr_uint32_remove(&option_deny_list, option);
+                narcutils::utils::dynarr_uint32_remove(&option_deny_list, option);
                 break;
             }
             case PARAM_CURLHACKS_APPROVEALLCERT: {
@@ -240,7 +239,7 @@ namespace narchook::hooks::curl_hacks {
             free(dump_cert_path);
         }
 
-        utils::dynarr_uint32_end(&option_deny_list);
+        narcutils::utils::dynarr_uint32_end(&option_deny_list);
 
         ended = true;
     }

@@ -19,4 +19,12 @@
 
 #endif
 
+#ifndef HookAPI
+#define HookAPI
+#endif
+
+#ifndef EncryptedAPI
+#define EncryptedAPI
+#endif
+
 #endif//NARCHOOK_API_H

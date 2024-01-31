@@ -78,7 +78,7 @@ set(ANDROID_PLATFORM 30)
 endif ()
 
 
-add_library(narchash STATIC ${NARCHASH_SOURCES})
+add_library(narchash SHARED ${NARCHASH_SOURCES})
 set_target_properties(narchash PROPERTIES OUTPUT_NAME narchash)
 target_include_directories(narchash PRIVATE ${NARCHASH_INCLUDES})
 

@@ -5,7 +5,8 @@ project(narchook CXX)
 #    COMPILE SETTINGS     #
 ###########################
 
-set(NARCHOOK_API_VERSION                    11) # integer   NArcHook API version
+set(NARCHOOK_API_VERSION                    12) # integer   NArcHook API version
+set(NARCHASH_API_VERSION                     2) # integer   NArcHash API version
 set(NARCHOOK_BUILD_TYPE                      1) # integer   Set to 1 for release builds
 set(NARCHOOK_BUILD_PLATFORM                  1) # integer   0 -> LSPosed, 1 -> amd64-windows, 2 -> amd64-linux
 set(NARCHOOK_BUILD_JAVA_SUPPORT              1) # integer   0 -> false, 1 -> true
@@ -56,6 +57,7 @@ set(NARCHASH_SOURCES ${SOURCES_COMMON}
 
 add_compile_definitions(NARCHOOK_BUILD_VARIANT=${NARCHOOK_BUILD_TARGET})
 add_compile_definitions(NARCHOOK_API_VERSION=${NARCHOOK_API_VERSION})
+add_compile_definitions(NARCHASH_API_VERSION=${NARCHASH_API_VERSION})
 add_compile_definitions(NARCHOOK_BUILD_TYPE=${NARCHOOK_BUILD_TYPE})
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")

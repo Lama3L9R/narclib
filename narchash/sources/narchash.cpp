@@ -51,6 +51,6 @@ namespace narchash {
     }
 
     HookAPI uint32_t get_api_version() {
-        return 1; // TODO
+        return NARCHASH_API_VERSION; // TODO
     }
 }

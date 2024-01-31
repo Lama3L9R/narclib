@@ -1,6 +1,6 @@
 # narclib
 
-narclib, or Native ARCaea LIBerator, a c++ library for liberate Arcaea's deepest secrete.
+narclib, or Native ARCaea LIBerator, a c++ library for liberate Arcaea's deepest secret.
 
 This project is not open-source. 
 Any dissemination, distribution, copying, or use of this information to distribute, publish in any form is strictly prohibited 

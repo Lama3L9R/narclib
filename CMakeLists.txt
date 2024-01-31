@@ -52,7 +52,6 @@ set(XPOSED_SOURCES ${SOURCES_COMMON}
         narchook/sources/hookapi.cpp)
 
 set(NARCHASH_SOURCES ${SOURCES_COMMON}
-        narchash/sources/uint96.cpp
         narchash/sources/narchash.cpp
         narchash/sources/externapi/japi.cpp
         narchash/sources/externapi/ffi.cpp)

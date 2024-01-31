@@ -8,7 +8,7 @@
 #ifdef NARCHOOK_PLATFORM_CLANG
 
 #define HookAPI [[gnu::visibility("default")]] [[gnu::used]]
-#define EncryptedAPI [[clang::always_inline]] [[gnu::used]] inline
+#define EncryptedAPI inline __attribute__((always_inline)) [[gnu::used]]
 
 #endif
 

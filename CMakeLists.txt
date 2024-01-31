@@ -59,7 +59,7 @@ add_compile_definitions(NARCHOOK_BUILD_TYPE=${NARCHOOK_BUILD_TYPE})
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_definitions(NARCHOOK_BUILD_RELEASE=1)
-    add_compile_options(-O3 -fvisibility=hidden)
+    add_compile_options(-O3 -g0 -fvisibility=hidden)
 else()
     add_compile_definitions(NARCHOOK_BUILD_DEBUG=1)
     add_compile_options(-O0)

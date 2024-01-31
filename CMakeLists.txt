@@ -23,6 +23,8 @@ set(NARCHOOK_INCLUDES ${COMMON_INCLUDES} narchook/includes)
 set(NARCHASH_INCLUDES ${COMMON_INCLUDES} narchash/includes)
 
 if(NARCHOOK_BUILD_JAVA_SUPPORT EQUAL 1)
+    add_compile_definitions(NARCHASH_BUILD_JNI=${NARCHOOK_BUILD_TARGET})
+
     set(NARCHOOK_JAVA_HOME "$ENV{NARCHOOK_JAVA_HOME}")
     if (NARCHOOK_JAVA_HOME STREQUAL "")
         message(FATAL_ERROR "Java Support enabled but no JDK installation was found!")

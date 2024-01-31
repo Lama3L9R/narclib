@@ -2,6 +2,8 @@
 // Created by lamadaemon on 1/18/2024.
 //
 
+#ifdef NARCHASH_BUILD_JNI
+
 #include "jni.h"
 #include "narchash.h"
 
@@ -64,3 +66,5 @@ extern "C" JNIEXPORT void JNICALL Java_icu_lama_narclib_NArcHash_verifyChallenge
         return;
     }
 }
+
+#endif

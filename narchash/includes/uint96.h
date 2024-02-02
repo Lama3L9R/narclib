@@ -4,15 +4,15 @@
 // Special thanks to @7aGiven
 //
 
-#ifndef NARCHOOK_UIN96_H
-#define NARCHOOK_UIN96_H
+#ifndef NARCHOOK_UINT96_H
+#define NARCHOOK_UINT96_H
 
 #include <cstdint>
 #include "narcutils.h"
 
 namespace narcutils::utils {
 
-    typedef struct uint96 {   
+    typedef struct uint96 {
         uint64_t low;
         uint32_t high;
     } uint96_t;

@@ -20,9 +20,12 @@ namespace narchash {
 
         char* buff_pt1 = buff + sizeof(uint64_t);
         char* buff_pt2 = buff_pt1 + HASH_SIZE;
-        generate_challenge_pt1(body, path, salt, timestamp, &buff_pt1);
-        generate_challenge_pt2(body, salt, timestamp, &buff_pt2);
+        LOGI("Challenge part 1 generated");
+        generate_challenge_pt1(body, salt, timestamp, &buff_pt1);
+        LOGI("Challenge part 2 generated");
+        generate_challenge_pt2(body, path, salt, timestamp, &buff_pt2);
 
+        LOGI("Challenge generated successfully with parameters: path=%s, body=%s, ts=%llu, salt=%p, result=%p, result(deref)=%p", path, body, ts, salt, result, *result);
         *result = (char*) base64::encode((uint8_t*) buff, challenge_size(), nullptr);
 
         return GENERATE_SUCCESS;
@@ -36,14 +39,17 @@ namespace narchash {
         }
 
         uint64_t timestamp_given = *((uint64_t*) raw_challenge);
-        if (timestamp_given + 30000 < get_ts_now()) {
+        uint64_t now = get_ts_now();
+        if (timestamp_given + 30000 < now) {
+            LOGD("Challenge outdated(30s lifetime): %llu", (now - timestamp_given) / 1000);
             return VERIFY_OUTDATED;
         }
 
         char* generated;
         generate_challenge(path, body, timestamp_given, salt, &generated);
 
-        if (memcmp(generated, raw_challenge, challenge_size())) {
+        LOGI("Verify:  generated_challenge=%s", generated);
+        if (memcmp(generated, challenge, strlen(challenge)) != 0) {
             return VERIFY_ILLEGAL_HASH;
         }
 
@@ -51,6 +57,6 @@ namespace narchash {
     }
 
     HookAPI uint32_t get_api_version() {
-        return NARCHASH_API_VERSION; // TODO
+        return NARCHASH_API_VERSION;
     }
 }
